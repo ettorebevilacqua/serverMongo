@@ -57,7 +57,7 @@ function ModelService(Model) {
         return item;
     };
     const deleteItem = async (id) => {
-        const item = await getUserById(id);
+        const item = await getById(id);
         if (!item) {
             throw new ApiError(httpStatus.NOT_FOUND, 'item not found');
         }
