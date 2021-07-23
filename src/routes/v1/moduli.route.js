@@ -1,39 +1,41 @@
 const express = require('express');
 const auth = require('../../middlewares/auth');
 const validate = require('../../middlewares/validate');
-const userValidation = require('../../validations/user.validation');
-const userController = require('../../controllers/user.controller');
-const {modelController} = require('../../controllers');
+const modelValidation = require('../../validations/model.validation');
+const modelController = require('../../controllers/model.controller');
+const { Modulo } = require('../../models');
+
+const modelCtrl = modelController(Modulo);
 
 const router = express.Router();
 
 router
-  .route('/')
-  .post(auth('manageUsers'), validate(userValidation.createUser), userController.createUser)
-  .get(auth('getUsers'), validate(userValidation.getUsers), userController.getUsers);
+    .route('/')
+    .post(auth('manageUsers'), validate(modelValidation.create), modelCtrl.create)
+        .get(auth('getUsers'), validate(modelValidation.getItems), modelCtrl.getItems);
 
 router
-  .route('/:userId')
-  .get(auth('getUsers'), validate(userValidation.getUser), userController.getUser)
-  .patch(auth('manageUsers'), validate(userValidation.updateUser), userController.updateUser)
-  .delete(auth('manageUsers'), validate(userValidation.deleteUser), userController.deleteUser);
+    .route('/:id')
+    .get(auth('getUsers'), validate(modelValidation.getItem), modelCtrl.getItem)
+    .patch(auth('manageUsers'), validate(modelValidation.update), modelCtrl.update)
+    .delete(auth('manageUsers'), validate(modelValidation.delete), modelCtrl.delete);
 
 module.exports = router;
 
 /**
  * @swagger
  * tags:
- *   name: Users
- *   description: User management and retrieval
+ *   name: Moduli
+ *   description: Moduli management and retrieval
  */
 
 /**
  * @swagger
- * /users:
+ * /moduli:
  *   post:
- *     summary: Create a user
- *     description: Only admins can create other users.
- *     tags: [Users]
+ *     summary: Create a Modulo
+ *     description: Only admins can create other Moduli.
+ *     tags: [Moduli]
  *     security:
  *       - bearerAuth: []
  *     requestBody:
@@ -43,30 +45,12 @@ module.exports = router;
  *           schema:
  *             type: object
  *             required:
- *               - name
- *               - email
- *               - password
- *               - role
+ *               - title
  *             properties:
- *               name:
+ *               title:
  *                 type: string
- *               email:
- *                 type: string
- *                 format: email
- *                 description: must be unique
- *               password:
- *                 type: string
- *                 format: password
- *                 minLength: 8
- *                 description: At least one number and one letter
- *               role:
- *                  type: string
- *                  enum: [user, admin]
  *             example:
- *               name: fake name
- *               email: fake@example.com
- *               password: password1
- *               role: user
+ *               title: fake name
  *     responses:
  *       "201":
  *         description: Created
@@ -82,22 +66,12 @@ module.exports = router;
  *         $ref: '#/components/responses/Forbidden'
  *
  *   get:
- *     summary: Get all users
- *     description: Only admins can retrieve all users.
- *     tags: [Users]
+ *     summary: Get all Moduli
+ *     description: Only admins can retrieve all Moduli.
+ *     tags: [Moduli]
  *     security:
  *       - bearerAuth: []
  *     parameters:
- *       - in: query
- *         name: name
- *         schema:
- *           type: string
- *         description: User name
- *       - in: query
- *         name: role
- *         schema:
- *           type: string
- *         description: User role
  *       - in: query
  *         name: sortBy
  *         schema:
@@ -149,11 +123,11 @@ module.exports = router;
 
 /**
  * @swagger
- * /users/{id}:
+ * /moduli/{id}:
  *   get:
- *     summary: Get a user
+ *     summary: Get a modulo
  *     description: Logged in users can fetch only their own user information. Only admins can fetch other users.
- *     tags: [Users]
+ *     tags: [Moduli]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -178,9 +152,9 @@ module.exports = router;
  *         $ref: '#/components/responses/NotFound'
  *
  *   patch:
- *     summary: Update a user
+ *     summary: Update a Modulo
  *     description: Logged in users can only update their own information. Only admins can update other users.
- *     tags: [Users]
+ *     tags: [Moduli]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -189,7 +163,7 @@ module.exports = router;
  *         required: true
  *         schema:
  *           type: string
- *         description: User id
+ *         description: modulo id
  *     requestBody:
  *       required: true
  *       content:
@@ -197,21 +171,10 @@ module.exports = router;
  *           schema:
  *             type: object
  *             properties:
- *               name:
+ *               title:
  *                 type: string
- *               email:
- *                 type: string
- *                 format: email
- *                 description: must be unique
- *               password:
- *                 type: string
- *                 format: password
- *                 minLength: 8
- *                 description: At least one number and one letter
  *             example:
- *               name: fake name
- *               email: fake@example.com
- *               password: password1
+ *               title: fake name
  *     responses:
  *       "200":
  *         description: OK
@@ -229,9 +192,9 @@ module.exports = router;
  *         $ref: '#/components/responses/NotFound'
  *
  *   delete:
- *     summary: Delete a user
+ *     summary: Delete a Modulo
  *     description: Logged in users can delete only themselves. Only admins can delete other users.
- *     tags: [Users]
+ *     tags: [Moduli]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -240,7 +203,7 @@ module.exports = router;
  *         required: true
  *         schema:
  *           type: string
- *         description: User id
+ *         description: Modulo id
  *     responses:
  *       "200":
  *         description: No content

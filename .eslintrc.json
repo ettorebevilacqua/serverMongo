@@ -14,6 +14,10 @@
     "no-underscore-dangle": "off",
     "consistent-return": "off",
     "jest/expect-expect": "off",
-    "security/detect-object-injection": "off"
+    "security/detect-object-injection": "off",
+    "max-len": [2, {"code": 140, "tabWidth": 4, "ignoreUrls": true}],
+    "no-restricted-syntax": ["error", "FunctionExpression", "WithStatement", "BinaryExpression[operator='in']"],
+    "indent": ["error", "tab"],
+    "prettier/prettier": [2, { "useTabs": true }]]
   }
 }
