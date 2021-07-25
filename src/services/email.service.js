@@ -1,13 +1,51 @@
 const nodemailer = require('nodemailer');
 const config = require('../config/config');
 const logger = require('../config/logger');
+const configLocal2 = {
+ "domains": [
+    "yahoo.com"
+  ],
+  "host": "smtp.mail.yahoo.it",
+  "port": 587,
+  "secure": true,
 
-const transport = nodemailer.createTransport(config.email.smtp);
+  auth: {
+    user: 'ettorebevilacqua@gmail.com', // generated ethereal user
+    pass: 'pdjwgyidqnqbgeug', // generated ethereal password
+  },
+}
+
+const configLocal3 = {
+   service:"gmail",
+   auth: {
+     user: 'shukeenkel@gmail.com', // generated ethereal user
+     pass: 'qwer23portare!aCasaSempre', // generated ethereal password
+   },
+ }
+
+const configLocal = {
+ /* name:'localhost',
+  host: "smtp.ethereal.email",
+  port: 465,
+  secure: true, // true for 465, false for other ports 587
+  */
+  service: 'gmail', // no need to set host or port etc.
+  auth: {
+    user: 'shukeenkel@gmail.com', // generated ethereal user
+    pass: 'qwer23portare!aCasaSempre', // generated ethereal password
+  },
+}
+
+
+const transport = nodemailer.createTransport(configLocal);
 /* istanbul ignore next */
 if (config.env !== 'test') {
   transport
     .verify()
-    .then(() => logger.info('Connected to email server'))
+    .then(() => {
+      // sendVerificationEmail('ettorebevilacqua@gmail.com', 'ddd');
+      logger.info('Connected to email server')
+  })
     .catch(() => logger.warn('Unable to connect to email server. Make sure you have configured the SMTP options in .env'));
 }
 
@@ -52,7 +90,8 @@ const sendVerificationEmail = async (to, token) => {
   const text = `Dear user,
 To verify your email, click on this link: ${verificationEmailUrl}
 If you did not create an account, then ignore this email.`;
-  await sendEmail(to, subject, text);
+  const res = await sendEmail(to, subject, text);
+  console.log(res)
 };
 
 module.exports = {
