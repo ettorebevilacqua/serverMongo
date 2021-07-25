@@ -54,7 +54,7 @@ module.exports = router;
  *                 description: At least one number and one letter
  *             example:
  *               name: fake name
- *               email: fake@example.com
+ *               email: ettore@bevilacqua.com
  *               password: password1
  *     responses:
  *       "201":
@@ -95,7 +95,7 @@ module.exports = router;
  *                 type: string
  *                 format: password
  *             example:
- *               email: fake@example.com
+ *               email:  ettore@bevilacqua.com
  *               password: password1
  *     responses:
  *       "200":
@@ -196,7 +196,7 @@ module.exports = router;
  *                 type: string
  *                 format: email
  *             example:
- *               email: fake@example.com
+ *               email:  ettore@bevilacqua.com
  *     responses:
  *       "204":
  *         description: No content
