@@ -1,8 +1,10 @@
+const httpStatus = require('http-status');
+const ApiError = require('../utils/ApiError');
+
 module.exports.authService = require('./auth.service');
 module.exports.emailService = require('./email.service');
 module.exports.tokenService = require('./token.service');
 module.exports.userService = require('./user.service');
-
 
 function ModelService(Model) {
     const create = async (dataBody, appFunct, errorMessage) => {
