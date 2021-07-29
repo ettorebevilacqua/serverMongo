@@ -3,6 +3,7 @@ const validator = require('validator');
 const bcrypt = require('bcryptjs');
 const { toJSON, paginate } = require('./plugins');
 const { roles } = require('../config/roles');
+const withRecordInfo = require('./withRecordInfo.schema');
 
 const domandaSchema = mongoose.Schema({
     domanda: {
@@ -18,15 +19,14 @@ const domandaSchema = mongoose.Schema({
     risposte: [{}],
 });
 
-const moduloSchema = mongoose.Schema({
+const moduloSchema = mongoose.Schema(withRecordInfo({
     title: {
         type: String,
         required: true,
         trim: true,
     },
     domande: [domandaSchema],
-});
-
+}));
 
 // add plugin that converts mongoose to json
 moduloSchema.plugin(toJSON);
