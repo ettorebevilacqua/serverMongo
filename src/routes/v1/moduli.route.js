@@ -11,14 +11,14 @@ const router = express.Router();
 
 router
     .route('/')
-    .post(auth('manageUsers'), validate(modelValidation.create), modelCtrl.create)
-        .get(auth('getUsers'), validate(modelValidation.getItems), modelCtrl.getItems);
+    .post(auth('manager'), validate(modelValidation.create), modelCtrl.create)
+        .get(auth('manager'), validate(modelValidation.getItems), modelCtrl.getItems);
 
 router
     .route('/:id')
-    .get(auth('getUsers'), validate(modelValidation.getItem), modelCtrl.getItem)
-    .patch(auth('manageUsers'), validate(modelValidation.update), modelCtrl.update)
-    .delete(auth('manageUsers'), validate(modelValidation.delete), modelCtrl.delete);
+    .get(auth('manager'), validate(modelValidation.getItem), modelCtrl.getItem)
+    .patch(auth('manager',), validate(modelValidation.update), modelCtrl.update)
+    .delete(auth('manager'), validate(modelValidation.delete), modelCtrl.delete);
 
 module.exports = router;
 
