@@ -44,6 +44,6 @@ moduloSchema.pre('save', async function (next) {
 /**
  * @typedef Modulo
  */
-const modulo = mongoose.model('modulo', moduloSchema);
+const modulo = mongoose.model('Modulo', moduloSchema);
 
 module.exports = modulo;

@@ -48,24 +48,22 @@ const questionSchema = mongoose.Schema(withRecordInfo({
 questionSchema.plugin(toJSON);
 questionSchema.plugin(paginate);
 
-questionSchema.statics.createWithUser = async function (body, user) {
-   //  body.iduser=
-  //  const user = await this.create({ email, _id: { $ne: excludeUserId } });
-    return !!user;
-  };
-
-questionSchema.pre('save', async function (next) {
-    const modulo = this;
-    /* if (user.isModified('password')) {
-      user.password = await bcrypt.hash(user.password, 8);
+questionSchema.statics.beforeServiceSave = (dataBody) => {
+    const question = this;
+    if (dataBody && dataBody._info && dataBody._info.uc && (!question || !question.iduser)) {
+        dataBody.iduser = question && question._info && question._info.uc ? question._info.uc  : dataBody._info.uc;
     }
-    */
+    return dataBody;
+}
+questionSchema.pre('save', async function (next) {
+    const question = this;
     next();
 });
+
 
 /**
  * @typedef Modulo
  */
-const Question = mongoose.model('question', questionSchema);
+const Question = mongoose.model('Question', questionSchema);
 
 module.exports = Question;

@@ -8,7 +8,7 @@ const { ModelService } = require('../services');
 function modelController(modelService){
 
     const create = catchAsync(async (req, res) => {
-        const item = await modelService.create(req.body);
+        const item = await modelService.create(req.body, req.user);
         res.status(httpStatus.CREATED).send(item);
       });
 
@@ -28,7 +28,7 @@ function modelController(modelService){
       });
 
       const update = catchAsync(async (req, res) => {
-        const user = await modelService.update(req.params.id, req.body);
+        const user = await modelService.update(req.params.id, req.body, null, req.user);
         res.send(user);
       });
 

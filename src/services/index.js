@@ -5,13 +5,17 @@ module.exports.authService = require('./auth.service');
 module.exports.emailService = require('./email.service');
 module.exports.tokenService = require('./token.service');
 module.exports.userService = require('./user.service');
-module.exports.viewService = require('./view.service');
+module.exports.viewService = require('./views.service');
 
 function ModelService(Model) {
-    const create = async (dataBody, appFunct, errorMessage) => {
-        if (appFunct && Model[appFunct] && await Model[appFunct](dataBody)) {
-            throw new ApiError(httpStatus.BAD_REQUEST, errorMessage || 'Bad Request');
+    const create = async (dataBody, user, appFunct, errorMessage) => {
+        // if (appFunct && Model[appFunct] && await Model[appFunct](dataBody, user)) {
+        if (Model[appFunct]) {
+            return Model[appFunct](dataBody, user);
         }
+
+        dataBody._info = { uc: user && user.id };
+        const dataBodyModel = Model.beforeServiceSave ? Model.beforeServiceSave(dataBody) : dataBody;
         return Model.create(dataBody);
     };
 
@@ -44,7 +48,7 @@ function ModelService(Model) {
      * @param {Object} updateBody
      * @returns {Promise<User>}
     */
-    const update = async (id, updateBody, validateFunc) => {
+    const update = async (id, updateBody, validateFunc, user) => {
         const item = await getById(id);
         if (!item) {
             throw new ApiError(httpStatus.NOT_FOUND, 'id not found');
@@ -55,6 +59,7 @@ function ModelService(Model) {
                 throw new ApiError(httpStatus.BAD_REQUEST, validatErroreMessage);
             }
         }
+        updateBody._info = { ...item._info, uu: user && user.id };
         Object.assign(item, updateBody);
         await item.save();
         return item;
