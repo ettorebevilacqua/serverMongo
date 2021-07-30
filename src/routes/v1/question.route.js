@@ -11,14 +11,14 @@ const router = express.Router();
 
 router
     .route('/')
-    .post(auth('manage'), validate(modelValidation.create), modelCtrl.create)
-        .get(auth('manage'), validate(modelValidation.getItems), modelCtrl.getItems);
+    .post(auth('manager'), validate(modelValidation.create), modelCtrl.create)
+        .get(auth('manager'), validate(modelValidation.getItems), modelCtrl.getItems);
 
 router
     .route('/:id')
-    .get(auth('manage'), validate(modelValidation.getItem), modelCtrl.getItem)
-    .patch(auth('manage'), validate(modelValidation.update), modelCtrl.update)
-    .delete(auth('manage'), validate(modelValidation.delete), modelCtrl.delete);
+    .get(auth('manager'), validate(modelValidation.getItem), modelCtrl.getItem)
+    .patch(auth('manager'), validate(modelValidation.update), modelCtrl.update)
+    .delete(auth('manager'), validate(modelValidation.delete), modelCtrl.delete);
 
 module.exports = router;
 
@@ -105,7 +105,7 @@ module.exports = router;
  *                 results:
  *                   type: array
  *                   items:
- *                     $ref: '#/components/schemas/User'
+ *                     $ref: '#/components/schemas/Question'
  *                 page:
  *                   type: integer
  *                   example: 1
@@ -146,7 +146,7 @@ module.exports = router;
  *         content:
  *           application/json:
  *             schema:
- *                $ref: '#/components/schemas/User'
+ *                $ref: '#/components/schemas/Question'
  *       "401":
  *         $ref: '#/components/responses/Unauthorized'
  *       "403":
@@ -157,7 +157,7 @@ module.exports = router;
  *   patch:
  *     summary: Update a Question
  *     description: Logged in users can only update their own information. Only admins can update other users.
- *     tags: [Question]
+ *     tags: [Questions]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -184,7 +184,7 @@ module.exports = router;
  *         content:
  *           application/json:
  *             schema:
- *                $ref: '#/components/schemas/User'
+ *                $ref: '#/components/schemas/Question'
  *       "400":
  *         $ref: '#/components/responses/DuplicateEmail'
  *       "401":
