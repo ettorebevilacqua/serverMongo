@@ -3,6 +3,7 @@ const authRoute = require('./auth.route');
 const userRoute = require('./user.route');
 const moduliRoute = require('./moduli.route');
 const questionRoute = require('./question.route');
+const viewRoute = require('./view.route');
 const docsRoute = require('./docs.route');
 const config = require('../../config/config');
 
@@ -24,6 +25,10 @@ const defaultRoutes = [
   {
     path: '/questions',
     route: questionRoute,
+  },
+  {
+    path: '/view',
+    route: viewRoute,
   },
 ];
 
