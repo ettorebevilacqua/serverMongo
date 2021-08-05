@@ -11,10 +11,9 @@ const trowError = (status, msgText) =>{
 const getQuestions = catchAsync(async (req, res) => {
     const user = req.user;
     
-    const filter = pick(req.query, ['idmodulo', 'idcorso']);
+    const filter = pick(req.query, ['idmodulo', 'idcorso', 'id']);
     const options = pick(req.query, ['sortBy', 'limit', 'page']);
     !user && trowError(httpStatus.NOT_FOUND, 'User not found');
-    console.log('xxxx2', req.query, viewService );
     const question = await viewService.getQuestions(filter, options);
     res.send(question);
 });

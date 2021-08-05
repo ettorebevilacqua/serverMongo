@@ -7,6 +7,7 @@ const create = {
 
 const getItems = {
   query: Joi.object().keys({
+    id: Joi.string().custom(objectId),
     idmodulo: Joi.string(),
     idcorso: Joi.string(),
     sortBy: Joi.string(),

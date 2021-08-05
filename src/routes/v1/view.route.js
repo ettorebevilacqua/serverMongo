@@ -41,6 +41,12 @@ module.exports = router;
  *         schema:
  *           type: string
  *         description: Corso id
+ *       - in: query
+ *         name: id
+ *         required: false
+ *         schema:
+ *           type: string
+ *         description: id question
  *     responses:
  *       "200":
  *         description: OK
