@@ -10,10 +10,12 @@ const questionSchema = mongoose.Schema(withRecordInfo({
         type: String,
         required: true,
         trim: true,
+        key: true,
     },
     idmodulo: {
         type: String,
         required: true,
+        key: true,
         trim: true,
     },
     idcorso: {
@@ -48,12 +50,21 @@ const questionSchema = mongoose.Schema(withRecordInfo({
 questionSchema.plugin(toJSON);
 questionSchema.plugin(paginate);
 
-questionSchema.statics.beforeServiceSave = (dataBody) => {
+questionSchema.statics.beforeServiceSave = async (Model, dataBody, id = 0) => {
     const question = this;
+    const {idmodulo, idcorso} = {...dataBody};
+
+    const found = await Model.findOne({idmodulo, idcorso});
+
+    // console.log('beforeService ', id, found);
+    if (!!found && found._id != id  ){
+        return [null, 'idcorso ' + idcorso + ' è già presente '];
+    }
+
     if (dataBody && dataBody._info && dataBody._info.uc && (!question || !question.iduser)) {
         dataBody.iduser = question && question._info && question._info.uc ? question._info.uc  : dataBody._info.uc;
     }
-    return dataBody;
+    return [dataBody, null ];
 }
 questionSchema.pre('save', async function (next) {
     const question = this;
