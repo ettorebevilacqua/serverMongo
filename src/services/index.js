@@ -15,7 +15,10 @@ function ModelService(Model) {
         }
 
         dataBody._info = { uc: user && user.id };
-        const dataBodyModel = Model.beforeServiceSave ? Model.beforeServiceSave(dataBody) : dataBody;
+        const [dataBodyModel, error] = Model.beforeServiceSave ? await Model.beforeServiceSave(Model, dataBody) : [dataBody, null];
+        if (error){
+            throw new ApiError(httpStatus.BAD_REQUEST, error);
+        }
         return Model.create(dataBody);
     };
 
@@ -59,15 +62,22 @@ function ModelService(Model) {
                 throw new ApiError(httpStatus.BAD_REQUEST, validatErroreMessage);
             }
         }
+
         updateBody._info = { ...item._info, uu: user && user.id };
-        Object.assign(item, updateBody);
+        // console.log('xxxx id', id);
+        const [dataBodyModel, error] = Model.beforeServiceSave ? await Model.beforeServiceSave(Model, updateBody, id) : [updateBody, null];
+        if (error){
+            throw new ApiError(httpStatus.CONFLICT, error);
+        }
+
+        Object.assign(item, dataBodyModel);
         await item.save();
         return item;
     };
     const deleteItem = async (id) => {
         const item = await getById(id);
         if (!item) {
-            throw new ApiError(httpStatus.NOT_FOUND, 'item not found');
+            throw new ApiError(httpStatus.CONFLICT, 'item not found');
         }
         await item.remove();
         return item;

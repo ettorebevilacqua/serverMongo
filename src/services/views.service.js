@@ -4,10 +4,16 @@ const ApiError = require('../utils/ApiError');
 
 const getQuestions = async (filter, options) => {
 
-    const { idUser, idmodulo, idcorso } = { ...filter };
+    const { idUser, idmodulo, idcorso, id } = { ...filter };
     const modulo = await Modulo.findOne({ _id: idmodulo });
     const test = { idmodulo: "60ed63411cd3367bdfccfa23," };
-    const questions = await Question.paginate(test, options);
+    const test2 = { id: '6107b8d70ef2d786e348b967' };
+    if (filter.id) {
+        delete filter.id;
+        filter._id = id;
+    }
+
+    const questions = await Question.paginate(filter, options);
     return { questions, modulo };
 };
 
