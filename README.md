@@ -1,3 +1,5 @@
+path nginx = etc/nginx/sites-available
+
 # RESTful API Node Server Boilerplate
 
 [![Build Status](https://travis-ci.org/hagopj13/node-express-boilerplate.svg?branch=master)](https://travis-ci.org/hagopj13/node-express-boilerplate)
@@ -31,7 +33,7 @@ Clone the repo:
 ```bash
 git clone --depth 1 https://github.com/hagopj13/node-express-boilerplate.git
 cd node-express-boilerplate
-npx rimraf ./.git
+npx rimraf ./.git 
 ```
 
 Install the dependencies:
@@ -50,19 +52,28 @@ cp .env.example .env
 
 ## Table of Contents
 
-- [Features](#features)
-- [Commands](#commands)
-- [Environment Variables](#environment-variables)
-- [Project Structure](#project-structure)
-- [API Documentation](#api-documentation)
-- [Error Handling](#error-handling)
-- [Validation](#validation)
-- [Authentication](#authentication)
-- [Authorization](#authorization)
-- [Logging](#logging)
-- [Custom Mongoose Plugins](#custom-mongoose-plugins)
-- [Linting](#linting)
-- [Contributing](#contributing)
+- [RESTful API Node Server Boilerplate](#restful-api-node-server-boilerplate)
+  - [Quick Start](#quick-start)
+  - [Manual Installation](#manual-installation)
+  - [Table of Contents](#table-of-contents)
+  - [Features](#features)
+  - [Commands](#commands)
+  - [Environment Variables](#environment-variables)
+  - [Project Structure](#project-structure)
+  - [API Documentation](#api-documentation)
+    - [API Endpoints](#api-endpoints)
+  - [Error Handling](#error-handling)
+  - [Validation](#validation)
+  - [Authentication](#authentication)
+  - [Authorization](#authorization)
+  - [Logging](#logging)
+  - [Custom Mongoose Plugins](#custom-mongoose-plugins)
+    - [toJSON](#tojson)
+    - [paginate](#paginate)
+  - [Linting](#linting)
+  - [Contributing](#contributing)
+  - [Inspirations](#inspirations)
+  - [License](#license)
 
 ## Features
 
