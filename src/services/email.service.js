@@ -1,8 +1,11 @@
 const nodemailer = require('nodemailer');
 const config = require('../config/config');
 const logger = require('../config/logger');
+const ApiError = require('../utils/ApiError');
+const httpStatus = require('http-status');
+
 const configLocal2 = {
- "domains": [
+  "domains": [
     "yahoo.com"
   ],
   "host": "smtp.mail.yahoo.it",
@@ -16,19 +19,19 @@ const configLocal2 = {
 }
 
 const configLocal3 = {
-   service:"gmail",
-   auth: {
-     user: 'shukeenkel@gmail.com', // generated ethereal user
-     pass: 'qwer23portare!aCasaSempre', // generated ethereal password
-   },
- }
+  service: "gmail",
+  auth: {
+    user: 'shukeenkel@gmail.com', // generated ethereal user
+    pass: 'qwer23portare!aCasaSempre', // generated ethereal password
+  },
+}
 
 const configLocal = {
- /* name:'localhost',
-  host: "smtp.ethereal.email",
-  port: 465,
-  secure: true, // true for 465, false for other ports 587
-  */
+  /* name:'localhost',
+   host: "smtp.ethereal.email",
+   port: 465,
+   secure: true, // true for 465, false for other ports 587
+   */
   service: 'gmail', // no need to set host or port etc.
   auth: {
     user: 'shukeenkel@gmail.com', // generated ethereal user
@@ -45,7 +48,7 @@ if (config.env !== 'test') {
     .then(() => {
       // sendVerificationEmail('ettorebevilacqua@gmail.com', 'ddd');
       logger.info('Connected to email server')
-  })
+    })
     .catch(() => logger.warn('Unable to connect to email server. Make sure you have configured the SMTP options in .env'));
 }
 
@@ -58,7 +61,15 @@ if (config.env !== 'test') {
  */
 const sendEmail = async (to, subject, text) => {
   const msg = { from: config.email.from, to, subject, text };
-  await transport.sendMail(msg);
+  try {
+    const res = await transport.sendMail(msg);
+
+    console.log('send', res);
+    return res;
+  } catch (error) {
+    console.log('error send mail ', error);
+    throw new ApiError(httpStatus.CONFLICT, '------>' + JSON.stringify(error));
+  }
 };
 
 /**
@@ -74,7 +85,14 @@ const sendResetPasswordEmail = async (to, token) => {
   const text = `Dear user,
 To reset your password, click on this link: ${resetPasswordUrl}
 If you did not request any password resets, then ignore this email.`;
-  await sendEmail(to, subject, text);
+  const dsn = {
+    id: 'some random message specific id',
+    return: 'headers',
+    notify: ['failure', 'delay'],
+    recipient: 'shukeenkel@gmail.com'
+  }
+
+  return await sendEmail({ to, subject, text, dsn });
 };
 
 /**
@@ -100,3 +118,5 @@ module.exports = {
   sendResetPasswordEmail,
   sendVerificationEmail,
 };
+
+// sendEmail('ettorebevilacqua@gmail.com', 'text xx', 'xxx');
