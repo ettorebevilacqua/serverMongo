@@ -6,6 +6,7 @@ module.exports.emailService = require('./email.service');
 module.exports.tokenService = require('./token.service');
 module.exports.userService = require('./user.service');
 module.exports.viewService = require('./views.service');
+module.exports.questionService = require('./question.service');
 
 function ModelService(Model) {
     const create = async (dataBody, user, appFunct, errorMessage) => {
