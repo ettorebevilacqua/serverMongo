@@ -5,6 +5,11 @@ const Token = require('../models/token.model');
 const ApiError = require('../utils/ApiError');
 const { tokenTypes } = require('../config/tokens');
 
+const isUserRoleRight = (user, requiredRights) => {
+  const userRights = roleRights.get(user.role);
+  return requiredRights.every((requiredRight) => userRights.includes(requiredRight));
+};
+
 /**
  * Login with username and password
  * @param {string} email
@@ -96,4 +101,5 @@ module.exports = {
   refreshAuth,
   resetPassword,
   verifyEmail,
+  isUserRoleRight,
 };
