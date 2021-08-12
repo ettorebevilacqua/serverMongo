@@ -20,6 +20,10 @@ router
     .patch(auth('manager'), validate(modelValidation.update), modelCtrl.update)
     .delete(auth('manager'), validate(modelValidation.delete), modelCtrl.delete);
 
+router
+    .route('/sendEmail/:id')
+    .get(auth('manager'), validate(modelValidation.getItem), modelCtrl.getItem)
+
 module.exports = router;
 
 /**
