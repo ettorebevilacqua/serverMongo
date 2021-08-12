@@ -46,7 +46,36 @@ module.exports = router;
  *         required: false
  *         schema:
  *           type: string
- *         description: id question
+ *       - in: query
+ *         name: closeAt
+ *         required: false
+ *         schema:
+ *           type: string
+ *         description:  closed question, true pr false or date
+ *       - in: query
+ *         name: sortBy
+ *         schema:
+ *           type: string
+ *         description: sort by query in the form of field:desc/asc (ex. name:asc)
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *           minimum: 1
+ *         default: 10
+ *         description: Maximum number of users
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *           minimum: 1
+ *           default: 1
+ *         description: Page number
+ *       - in: query
+ *         name: full
+ *         schema:
+ *           type: string
+ *         description: with nested field
  *     responses:
  *       "200":
  *         description: OK
