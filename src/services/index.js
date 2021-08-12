@@ -16,8 +16,8 @@ function ModelService(Model) {
         }
 
         dataBody._info = { uc: user && user.id };
-        const [dataBodyModel, error] = Model.beforeServiceSave ? await Model.beforeServiceSave(Model, dataBody) : [dataBody, null];
-        if (error){
+        const [dataBodyModel, error] = Model.beforeServiceSave ? await Model.beforeServiceSave(Model, user, dataBody) : [dataBody, null];
+        if (error) {
             throw new ApiError(httpStatus.BAD_REQUEST, error);
         }
         return Model.create(dataBody);
@@ -66,11 +66,12 @@ function ModelService(Model) {
 
         updateBody._info = { ...item._info, uu: user && user.id };
         // console.log('xxxx id', id);
-        const [dataBodyModel, error] = Model.beforeServiceSave ? await Model.beforeServiceSave(Model, updateBody, id) : [updateBody, null];
-        if (error){
+        const [dataBodyModel, error] = Model.beforeServiceSave ? await Model.beforeServiceSave(Model, user, updateBody, id) : [updateBody, null];
+        if (error) {
             throw new ApiError(httpStatus.CONFLICT, error);
         }
 
+        Object.keys(dataBodyModel).map(key => item[key] = dataBodyModel[key]);
         Object.assign(item, dataBodyModel);
         await item.save();
         return item;
