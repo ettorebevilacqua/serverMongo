@@ -10,9 +10,12 @@ const getItems = {
     id: Joi.string().custom(objectId),
     idmodulo: Joi.string(),
     idcorso: Joi.string(),
+    iduser: Joi.string(),
+    closeAt: Joi.string(),
     sortBy: Joi.string(),
     limit: Joi.number().integer(),
     page: Joi.number().integer(),
+    full: Joi.string(),
   }),
 };
 

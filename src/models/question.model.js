@@ -33,15 +33,15 @@ const questionSchema = mongoose.Schema(withRecordInfo({
         required: false,
         trim: true,
     },
-    docenti: {
-        type: String,
+    docenti: [{}],
+    numPartecipanti: {
+        type: Number,
         required: false,
         trim: true,
     },
-    numPartecipanti: {
-        type: String,
+    closeAt: {
+        type: Date,
         required: false,
-        trim: true,
     },
     partecipanti: [{}],
 }));
@@ -50,22 +50,26 @@ const questionSchema = mongoose.Schema(withRecordInfo({
 questionSchema.plugin(toJSON);
 questionSchema.plugin(paginate);
 
-questionSchema.statics.beforeServiceSave = async (Model, dataBody, id = 0) => {
+questionSchema.statics.beforeServiceSave = async (Model, user, dataBody, id = 0) => {
     const question = this;
-    const {idmodulo, idcorso} = {...dataBody};
+    const { idmodulo, idcorso, closeAt, _info, iduser } = { ...dataBody };
 
-    const found = await Model.findOne({idmodulo, idcorso});
+    if(question && question.closeAt && !!closeAt){
+        return [null, ' ' + ' question has close '];
+    }
 
-    // console.log('beforeService ', id, found);
-    if (!!found && found._id != id  ){
+    const found = await Model.findOne({ idmodulo, idcorso });
+    if (!!found && found._id != id) {
         return [null, 'idcorso ' + idcorso + ' è già presente '];
     }
+    // console.log('xxxx to save dataBody', dataBody);
 
-    if (dataBody && dataBody._info && dataBody._info.uc && (!question || !question.iduser)) {
-        dataBody.iduser = question && question._info && question._info.uc ? question._info.uc  : dataBody._info.uc;
+    if (_info && _info.uc) { // && (!question || !iduser)) {
+        dataBody.iduser = question && question._info && question._info.uc ? question._info.uc : dataBody._info.uc;
     }
-    return [dataBody, null ];
+    return [dataBody, null];
 }
+
 questionSchema.pre('save', async function (next) {
     const question = this;
     next();
