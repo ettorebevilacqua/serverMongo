@@ -4,6 +4,7 @@ const validate = require('../../middlewares/validate');
 const modelValidation = require('../../validations/model.validation');
 const modelController = require('../../controllers/model.controller');
 const { Question } = require('../../models');
+const questionCtrl = require('../../controllers/question.controller');
 
 const modelCtrl = modelController(Question);
 
@@ -12,7 +13,7 @@ const router = express.Router();
 router
     .route('/')
     .post(auth('manager'), validate(modelValidation.create), modelCtrl.create)
-        .get(auth('manager'), validate(modelValidation.getItems), modelCtrl.getItems);
+    .get(auth('manager'), validate(modelValidation.getItems), modelCtrl.getItems);
 
 router
     .route('/:id')
@@ -22,7 +23,7 @@ router
 
 router
     .route('/sendEmail/:id')
-    .get(auth('manager'), validate(modelValidation.getItem), modelCtrl.getItem)
+    .patch(auth('manager'), validate(modelValidation.getItem), questionCtrl.sendMail);
 
 module.exports = router;
 

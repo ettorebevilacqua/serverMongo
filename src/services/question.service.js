@@ -5,10 +5,11 @@ const moment = require('moment');
 
 const { authService, tokenService: { generateToken }, emailService: { sendEmail } } = require('./');
 const { tokenTypes } = require('../config/tokens');
+const pick = require('../utils/pick');
 
-const  getPathUrl = (host, token) => host + '/app/user/compile/' + token;
+const getPathUrl = (host, token) => host + '/app/user/compile/' + token;
 
-const msgQuesgetPathUrltionario1 = host => (url, { nome, titolo }) => `
+const msgQuestionario = ({ url, nome, titolo }) => `
 Gentile ${nome},
 il nuovo questionario ${titolo} è disponibile a questo indirizzo :
 
@@ -18,25 +19,66 @@ La preghiamo di prestare attenzione nel rispondere a tutte le domande per l'invi
 `;
 
 const questionSendMail = async (_id, host) => {
+    console.log('listPartecipanti xxx ', _id);
     const question = await Question.findOne({ _id });
-    const list = question.partecipanti;
-    const msgSender = msgQuestionario(host);
-
-    const results = list.map(async (item) => {
-        const email = item && item.email;
-        if (email) {
-            const accessTokenExpires = moment().add(60, 'days');
-            const pathUrl = getPathUrl(path, accessTokenExpires);
-            const tokenAccess = generateToken(email+'/'+id, accessTokenExpires, tokenTypes.GUEST_QUESTION);
-            const res = await sendEmail(email, 'Questionario ', msgSender(item));
-            return res;
-            // const {accepted, messageId, response, rejected} = res;
-
+    const listPartecipanti = question.partecipanti;
+    const idSent = [];
+    const listPromise = [];
+    // console.log('listPartecipanti xxx ', listPartecipanti);
+    const results = listPartecipanti.map(async (item, idx) => {
+        const { email, id, nome } = item || {};
+        if (!email) {
+            return false;
         }
+        // if (idx > 1) return true; // limit for test email send
+        const accessTokenExpires = moment().add(60, 'days');
+
+        const tokenAccess = generateToken(email + '/' + id, accessTokenExpires, tokenTypes.GUEST_QUESTION);
+        const pathUrl = getPathUrl(host, tokenAccess);
+        const param = {
+            url: pathUrl,
+            titolo: question.titolo,
+            nome: item.nome,
+        };
+
+        const msgToSend = msgQuestionario(param);
+        listPromise.push(sendEmail(email, 'Questionario ', msgToSend));
+
+        //const mailSent = await sendEmail(email, 'Questionario ', msgToSend);
+        // idSent.push({ email, messageId: mailSent.messageId });
+        // console.log('idSent xxx', idSent);
+        // return 1 //{ email, messageId: mailSent.messageId };
+        //return [res, null];
+
+
+        // const {accepted, messageId, response, rejected} = res;
+
         return null;
     })
+
+    return await Promise.allSettled(listPromise)
+        .then((result) => {
+            // console.log(result[0]);
+            result.map(res => {
+                const status = res.status;
+                const mailSent = res && res.value && res.status && res.status === 'fulfilled' && res.value.accepted[0];
+                listPartecipanti.map((part, idx) => {
+
+                    part.email === mailSent && question.partecipanti.set(idx, { ...part, sent: true });
+                    // console.log('set partec', question.partecipanti[idx]);
+
+                });
+                // console.log('result mail, ');
+                res.status === 'fulfilled'
+            });
+            question.save();
+            return result;
+        }) // .then(data=>console.log('dddddd'));;
+
 }
 
 module.exports = {
     questionSendMail
 };
+
+// questionSendMail('6107fcb1bf9939b6183f566e', 'local/');
