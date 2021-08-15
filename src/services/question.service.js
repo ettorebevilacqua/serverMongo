@@ -11,15 +11,15 @@ const getPathUrl = (host, token) => host + '/app/user/compile/' + token;
 
 const msgQuestionario = ({ url, nome, titolo }) => `
 Gentile ${nome},
-il nuovo questionario ${titolo} è disponibile a questo indirizzo :
+il nuovo questionario ${titolo} è disponibile. :
 
-${url}
+<a href="${url}" >click Qui per aprire il questionario </a>
 
 La preghiamo di prestare attenzione nel rispondere a tutte le domande per l'invio dei risultati.
+
 `;
 
 const questionSendMail = async (_id, host) => {
-    console.log('listPartecipanti xxx ', _id);
     const question = await Question.findOne({ _id });
     const listPartecipanti = question.partecipanti;
     const idSent = [];
@@ -27,22 +27,22 @@ const questionSendMail = async (_id, host) => {
     // console.log('listPartecipanti xxx ', listPartecipanti);
     const results = listPartecipanti.map(async (item, idx) => {
         const { email, id, nome } = item || {};
-        if (!email) {
+        if (!email || !item.sent) {
             return false;
         }
         // if (idx > 1) return true; // limit for test email send
-        const accessTokenExpires = moment().add(60, 'days');
 
-        const tokenAccess = generateToken(email + '/' + id, accessTokenExpires, tokenTypes.GUEST_QUESTION);
+        const tokenAccess = item.token ? item.token : generateQuestionToken(id, email );
         const pathUrl = getPathUrl(host, tokenAccess);
         const param = {
             url: pathUrl,
             titolo: question.titolo,
             nome: item.nome,
         };
-
+        item.token = tokenAccess;
+        item.sendCount = (item.sendCount || 0) +1;
         const msgToSend = msgQuestionario(param);
-        listPromise.push(sendEmail(email, 'Questionario ', msgToSend));
+        listPromise.push(sendEmail(email, 'Questionario ', msgToSend, true));
 
         //const mailSent = await sendEmail(email, 'Questionario ', msgToSend);
         // idSent.push({ email, messageId: mailSent.messageId });
@@ -58,13 +58,12 @@ const questionSendMail = async (_id, host) => {
 
     return await Promise.allSettled(listPromise)
         .then((result) => {
-            // console.log(result[0]);
+         console.log(result[0]);
             result.map(res => {
                 const status = res.status;
                 const mailSent = res && res.value && res.status && res.status === 'fulfilled' && res.value.accepted[0];
                 listPartecipanti.map((part, idx) => {
-
-                    part.email === mailSent && question.partecipanti.set(idx, { ...part, sent: true });
+                    part.email === mailSent && question.partecipanti.set(idx, { ...part, sent:true });
                     // console.log('set partec', question.partecipanti[idx]);
 
                 });

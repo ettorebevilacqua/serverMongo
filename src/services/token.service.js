@@ -24,6 +24,25 @@ const generateToken = (userId, expires, type, secret = config.jwt.secret) => {
   };
   return jwt.sign(payload, secret);
 };
+const accessTokenExpires60day = moment().add(60, 'days');
+const generateQuestionToken = (id, email,  secret = config.jwt.secret) => {
+  const payload = {
+    id,
+    email,
+  };
+  return jwt.sign(payload, secret);
+};
+
+const verifyQuestionToken = (token) => {
+  const {id, email} = jwt.verify(token, config.jwt.secret);
+
+  if (!id || !email) {
+    throw new Error('Token not found');
+  }
+  return  {id, email};
+};
+
+// console.log(verifyQuestionToken( generateQuestionToken('12', 'pippo@pipo.it')));
 
 /**
  * Save a token
@@ -120,4 +139,6 @@ module.exports = {
   generateAuthTokens,
   generateResetPasswordToken,
   generateVerifyEmailToken,
+  verifyQuestionToken,
+  generateQuestionToken,
 };

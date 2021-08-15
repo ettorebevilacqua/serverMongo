@@ -59,15 +59,15 @@ if (config.env !== 'test') {
  * @param {string} text
  * @returns {Promise}
  */
-const sendEmail = async (to, subject, text) => {
-  const msg = { from: config.email.from, to, subject, text };
+const sendEmail = async (to, subject, text, isHtml=false) => {
+  const msg = { from: config.email.from, to, subject };
+  msg[isHtml ? 'html' : 'text'] = text;
   try {
     const res = await transport.sendMail(msg);
 
-    // console.log('send', res);
+     console.log('send', res);
     return res;
   } catch (error) {
-    // console.log('error send mail ', error);
     throw new ApiError(httpStatus.CONFLICT, '------>' + JSON.stringify(error));
   }
 };
