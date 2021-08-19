@@ -1,8 +1,11 @@
 const express = require('express');
 const auth = require('../../middlewares/auth');
 const validate = require('../../middlewares/validate');
+const {getDataFromToken} = require('../../middlewares/tokenGuest');
 const modelValidation = require('../../validations/model.validation');
+const moduliValidation = require('../../validations/moduli.validation');
 const modelController = require('../../controllers/model.controller');
+const {getModuloGuest, pathcModuloGuest} = require('../../controllers/moduli.controller');
 const { Modulo } = require('../../models');
 
 const modelCtrl = modelController(Modulo);
@@ -19,6 +22,12 @@ router
     .get(auth('manager'), validate(modelValidation.getItem), modelCtrl.getItem)
     .patch(auth('manager',), validate(modelValidation.update), modelCtrl.update)
     .delete(auth('manager'), validate(modelValidation.delete), modelCtrl.delete);
+
+router
+    .route('/token/:token')
+    .get(validate(moduliValidation.getItemToken), getModuloGuest);
+    // .patch(auth(), validate(), pathcModuloGuest);
+
 
 module.exports = router;
 
@@ -207,6 +216,73 @@ module.exports = router;
  *     responses:
  *       "200":
  *         description: No content
+ *       "401":
+ *         $ref: '#/components/responses/Unauthorized'
+ *       "403":
+ *         $ref: '#/components/responses/Forbidden'
+ *       "404":
+ *         $ref: '#/components/responses/NotFound'
+ */
+
+/**
+ * @swagger
+ * /moduli/token/{token}:
+ *   get:
+ *     summary: Get a modulo by token
+ *     description: user with guest token data retrieve.
+ *     tags: [Moduli]
+ *     parameters:
+ *       - in: path
+ *         name: token
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Guest User token
+ *     responses:
+ *       "200":
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *                $ref: '#/components/schemas/Modulo'
+ *       "401":
+ *         $ref: '#/components/responses/Unauthorized'
+ *       "403":
+ *         $ref: '#/components/responses/Forbidden'
+ *       "404":
+ *         $ref: '#/components/responses/NotFound'
+ *
+ *   patch:
+ *     summary: Update a Modulo
+ *     description: Guest users with token can only update their own information.
+ *     tags: [Moduli]
+ *     parameters:
+ *       - in: path
+ *         name: token
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: modulo id
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               title:
+ *                 type: string
+ *             example:
+ *               title: fake name
+ *     responses:
+ *       "200":
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *                $ref: '#/components/schemas/Modulo'
+ *       "400":
+ *         $ref: '#/components/responses/DuplicateEmail'
  *       "401":
  *         $ref: '#/components/responses/Unauthorized'
  *       "403":
