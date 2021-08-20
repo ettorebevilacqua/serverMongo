@@ -8,12 +8,12 @@ const withRecordInfo = require('./withRecordInfo.schema');
 const domandaSchema = mongoose.Schema({
     domanda: {
         type: String,
-        required: true,
+        required: false,
         trim: true,
     },
     tipo: {
         type: String,
-        required: true,
+        required: false,
         trim: true,
     },
     risposte: [{}],
