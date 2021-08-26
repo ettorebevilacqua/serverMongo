@@ -6,8 +6,9 @@ const moment = require('moment');
 const { authService, tokenService: { generateToken }, emailService: { sendEmail } } = require('./');
 const { tokenTypes } = require('../config/tokens');
 const pick = require('../utils/pick');
+const { generateQuestionToken, verifyQuestionToken } = require('../services/token.service');
 
-const getPathUrl = (host, token) => host + '/app/user/compile/' + token;
+const getPathUrl = (host, token) => host + '/guest/compile/' + token;
 
 const msgQuestionario = ({ url, nome, titolo }) => `
 Gentile ${nome},
@@ -24,10 +25,11 @@ const questionSendMail = async (_id, host) => {
     const listPartecipanti = question.partecipanti;
     const idSent = [];
     const listPromise = [];
-    // console.log('listPartecipanti xxx ', listPartecipanti);
+    
     const results = listPartecipanti.map(async (item, idx) => {
         const { email, id, nome } = item || {};
-        if (!email || !item.sent) {
+
+        if (!email || item.sent) {
             return false;
         }
         // if (idx > 1) return true; // limit for test email send
@@ -64,7 +66,7 @@ const questionSendMail = async (_id, host) => {
                 const mailSent = res && res.value && res.status && res.status === 'fulfilled' && res.value.accepted[0];
                 listPartecipanti.map((part, idx) => {
                     part.email === mailSent && question.partecipanti.set(idx, { ...part, sent:true });
-                    // console.log('set partec', question.partecipanti[idx]);
+                     console.log('set partec', question.partecipanti[idx]);
 
                 });
                 // console.log('result mail, ');

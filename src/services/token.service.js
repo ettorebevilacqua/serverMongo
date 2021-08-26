@@ -25,7 +25,7 @@ const generateToken = (userId, expires, type, secret = config.jwt.secret) => {
   return jwt.sign(payload, secret);
 };
 const accessTokenExpires60day = moment().add(60, 'days');
-const generateQuestionToken = (id, email,  secret = config.jwt.secret) => {
+const generateQuestionToken = (id, email, secret = config.jwt.secret) => {
   const payload = {
     id,
     email,
@@ -34,12 +34,13 @@ const generateQuestionToken = (id, email,  secret = config.jwt.secret) => {
 };
 
 const verifyQuestionToken = (token) => {
-  const {id, email} = jwt.verify(token, config.jwt.secret);
-
+  const decode = jwt.verify(token, config.jwt.secret);
+  const { id, email } = decode;
+  console.log('token checked', decode);
   if (!id || !email) {
     throw new Error('Token not found');
   }
-  return  {id, email};
+  return { id, email };
 };
 
 // console.log(verifyQuestionToken( generateQuestionToken('12', 'pippo@pipo.it')));
