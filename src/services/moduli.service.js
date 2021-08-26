@@ -1,13 +1,6 @@
 const httpStatus = require('http-status');
-const { Modulo } = require('../models');
+const { Modul, QuestionModuli } = require('../models');
 const ApiError = require('../utils/ApiError');
-
-const createModulo= async (dataBody) => {
-  /* if (await Modulo.isEmailTaken(userBody.email)) {
-    throw new ApiError(httpStatus.BAD_REQUEST, 'Email already taken');
-  } */
-  return Modulo.create(dataBody);
-};
 
 /**
  * Query for Moduli
@@ -18,20 +11,16 @@ const createModulo= async (dataBody) => {
  * @param {number} [options.page] - Current page (default = 1)
  * @returns {Promise<QueryResult>}
  */
-const queryModuli= async (filter, options) => {
+ const queryModuli= async (filter, options) => {
   const Moduli = await Modulo.paginate(filter, options);
   return Moduli;
 };
 
-const getModuloById = async (id) => {
-  return Modulo.findById(id);
+
+const getQuestionsModuli = async (filter, options) => {
+  return QuestionModuli.find(filter).populate('moduli');
 };
 
-
 module.exports = {
-  loginUserWithEmailAndPassword,
-  logout,
-  refreshAuth,
-  resetPassword,
-  verifyEmail,
+  getQuestionsModuli
 };

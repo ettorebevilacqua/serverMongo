@@ -26,11 +26,32 @@ const moduloSchema = mongoose.Schema(withRecordInfo({
         trim: true,
     },
     domande: [domandaSchema],
+    questionModuli:[{
+        type: mongoose.Schema.Types.ObjectId, ref: "QuestionModuli"
+     }]
+}));
+
+const questionModuliSchema = mongoose.Schema(withRecordInfo({
+    title: {
+        type: String,
+        required: true,
+        trim: true,
+    },
+    isPublic: {
+        type: Boolean,
+        required: false,
+    },
+    moduli: [{
+        type: mongoose.Schema.Types.ObjectId, ref: "Modulo"
+     }],
 }));
 
 // add plugin that converts mongoose to json
 moduloSchema.plugin(toJSON);
 moduloSchema.plugin(paginate);
+
+questionModuliSchema.plugin(toJSON);
+questionModuliSchema.plugin(paginate);
 
 moduloSchema.pre('save', async function (next) {
     const modulo = this;
@@ -44,6 +65,13 @@ moduloSchema.pre('save', async function (next) {
 /**
  * @typedef Modulo
  */
-const modulo = mongoose.model('Modulo', moduloSchema);
 
-module.exports = modulo;
+const Modulo = mongoose.model('Modulo', moduloSchema);
+
+/**
+ * @typedef QuestionModuli
+ */
+
+const QuestionModuli = mongoose.model('QuestionModuli', questionModuliSchema);
+
+module.exports = { Modulo, QuestionModuli };
