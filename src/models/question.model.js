@@ -12,7 +12,7 @@ const questionSchema = mongoose.Schema(withRecordInfo({
         trim: true,
         key: true,
     },
-    idmodulo: {
+    idquestion: {
         type: String,
         required: true,
         key: true,
@@ -52,13 +52,13 @@ questionSchema.plugin(paginate);
 
 questionSchema.statics.beforeServiceSave = async (Model, user, dataBody, id = 0) => {
     const question = this;
-    const { idmodulo, idcorso, closeAt, _info, iduser } = { ...dataBody };
+    const { idquestion, idcorso, closeAt, _info, iduser } = { ...dataBody };
 
     if(question && question.closeAt && !!closeAt){
         return [null, ' ' + ' question has close '];
     }
 
-    const found = await Model.findOne({ idmodulo, idcorso });
+    const found = await Model.findOne({ idquestion, idcorso });
     if (!!found && found._id != id) {
         return [null, 'idcorso ' + idcorso + ' è già presente '];
     }

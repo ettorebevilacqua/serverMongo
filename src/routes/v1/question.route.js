@@ -56,7 +56,7 @@ module.exports = router;
  *                 type: string
  *             example:
  *              titolo: new titolo,
- *              idmodulo: mymodule,
+ *              idquestion: mymodule,
  *              idcorso: mycorso,
  *
  *     responses:

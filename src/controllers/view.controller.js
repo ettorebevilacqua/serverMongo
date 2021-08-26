@@ -12,7 +12,7 @@ const trowError = (status, msgText) => {
 
 const getQuestions = catchAsync(async (req, res) => {
     const user = req.user;
-    const filterPick = pick(req.query, ['idmodulo', 'idcorso', 'id', 'iduser', 'closeAt']);
+    const filterPick = pick(req.query, ['idquestion', 'idcorso', 'id', 'iduser', 'closeAt']);
     const options = pick(req.query, ['sortBy', 'limit', 'page', 'full']);
     const hasRoleAuth = !filterPick.iduser ? false : auth.isUserRoleRight(user, ['super', 'admin']);
 

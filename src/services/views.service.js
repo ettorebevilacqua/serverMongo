@@ -16,8 +16,8 @@ const toObjectId = ids => ids.constructor === Array ?
 const isValidId = value => value.match(/^[0-9a-fA-F]{24}$/);
 
 const fullQuestion = async (docs) => {
-    var ids = toObjectId(uniq(docs.filter(doc => !!doc.idmodulo && isValidId(doc.idmodulo))
-        .map(doc => doc.idmodulo)));
+    var ids = toObjectId(uniq(docs.filter(doc => !!doc.idquestion && isValidId(doc.idquestion))
+        .map(doc => doc.idquestion)));
     const moduli = await Modulo.find({ _id: { $in: ids } });
     const getTitle = (id) => {
         const find = moduli.find(modulo => modulo.id === id);
@@ -25,13 +25,13 @@ const fullQuestion = async (docs) => {
         return find ? find.title : null;
     }
     return docs.reduce((acc, question) => {
-        const titleIndagine = !question.idmodulo ? null : getTitle(question.idmodulo);
+        const titleIndagine = !question.idquestion ? null : getTitle(question.idquestion);
         if (titleIndagine === null) return acc;
 
         const {_id, ...newQuestion} = question
         newQuestion.id = _id;
         newQuestion.titleIndagine = titleIndagine;
-        // console.log('xxxxx question.idmodulo', newQuestion, question.titleIndagine );
+        // console.log('xxxxx question.idquestion', newQuestion, question.titleIndagine );
         acc.push(newQuestion);
         return acc;
     }, []);
@@ -39,11 +39,10 @@ const fullQuestion = async (docs) => {
 
 const getQuestions = async (filter, options) => {
 
-    const { idUser, idmodulo, idcorso, id } = { ...filter };
+    const { idUser, idquestion, idcorso, id } = { ...filter };
     const byId = !id ? null : await Question.findOne({ _id: id });
-    const idmoduloQuery = byId ? byId.idmodulo : idmodulo;
-    const modulo = await Modulo.findOne({ _id: idmoduloQuery });
-
+    const idquestionQuery = byId ? byId.idquestion : idquestion;
+    const modulo = await Modulo.findOne({ _id: idquestionQuery });
     // console.log('xxx options ', options);
     const isFull = options && options.full && options.full === 'true';
 
@@ -53,6 +52,7 @@ const getQuestions = async (filter, options) => {
     const questions = isFull ?
         await fullQuestion(questionArray) : questionsRes;
     // console.log(questions);
+    // console.log('xxxx', idquestionQuery);
     return { questions, modulo };
 };
 

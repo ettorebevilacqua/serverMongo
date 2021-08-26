@@ -14,7 +14,7 @@ const rispostaSchema = mongoose.Schema({
 });
 
 const risposte =mongoose.Schema(withRecordInfo({
-    idmodulo: {
+    idquestion: {
         type: String,
         required: true,
         trim: true,

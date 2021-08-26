@@ -30,7 +30,7 @@ module.exports = router;
  *       - bearerAuth: []
  *     parameters:
  *       - in: query
- *         name: idmodulo
+ *         name: idquestion
  *         required: false
  *         schema:
  *           type: string
