@@ -9,6 +9,7 @@ const getItems = {
   query: Joi.object().keys({
     id: Joi.string().custom(objectId),
     idquestion: Joi.string(),
+    isPublic: Joi.boolean(),
     idcorso: Joi.string(),
     iduser: Joi.string(),
     closeAt: Joi.string(),

@@ -16,7 +16,7 @@ const router = express.Router();
 router
     .route('/question')
     .post(auth('admin'), validate(modelValidation.create), modelQuestionCtrl.create)
-    .get(auth('manager'), validate(modelValidation.getItems), moduliCtrl.getQuestionsModuli);
+    .get(auth('manager'), validate(moduliValidation.getItems), moduliCtrl.getQuestionsModuli);
 
 router
     .route('/')
@@ -290,6 +290,12 @@ module.exports = router;
  *     security:
  *       - bearerAuth: []
  *     parameters:
+ *       - in: query
+ *         name: isPublic
+ *         schema:
+ *           type: boolean
+ *           default: false
+ *         description: filter Public
  *       - in: query
  *         name: sortBy
  *         schema:
