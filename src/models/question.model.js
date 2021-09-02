@@ -20,7 +20,12 @@ const questionSchema = mongoose.Schema(withRecordInfo({
     },
     idcorso: {
         type: String,
-        required: true,
+        required: false,
+        trim: true,
+    },
+    corso: {
+        type: String,
+        required: false,
         trim: true,
     },
     titolo: {

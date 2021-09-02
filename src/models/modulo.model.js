@@ -12,7 +12,7 @@ const domandaSchema = mongoose.Schema({
         trim: true,
     },
     tipo: {
-        type: String,
+        type: Number,
         required: false,
         trim: true,
     },
@@ -26,9 +26,9 @@ const moduloSchema = mongoose.Schema(withRecordInfo({
         trim: true,
     },
     domande: [domandaSchema],
-    questionModuli:[{
+    questionModuli: [{
         type: mongoose.Schema.Types.ObjectId, ref: "QuestionModuli"
-     }]
+    }]
 }));
 
 const questionModuliSchema = mongoose.Schema(withRecordInfo({
@@ -43,7 +43,7 @@ const questionModuliSchema = mongoose.Schema(withRecordInfo({
     },
     moduli: [{
         type: mongoose.Schema.Types.ObjectId, ref: "Modulo"
-     }],
+    }],
 }));
 
 // add plugin that converts mongoose to json
@@ -60,6 +60,12 @@ moduloSchema.pre('save', async function (next) {
     }
     */
     next();
+});
+
+questionModuliSchema.pre('save', async function (next) {
+    if (!this.isPublic) {
+        this.isPublic = false;
+    }
 });
 
 /**
