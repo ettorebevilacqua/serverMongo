@@ -34,7 +34,7 @@ const moduloSchema = mongoose.Schema(withRecordInfo({
 const questionModuliSchema = mongoose.Schema(withRecordInfo({
     title: {
         type: String,
-        required: true,
+        required: false,
         trim: true,
     },
     isPublic: {
