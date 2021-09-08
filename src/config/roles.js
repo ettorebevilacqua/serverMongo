@@ -1,9 +1,9 @@
 const allRoles = {
   guest: [],
   user: ['question'],
-  manager: ['manager', 'ownerUsers'],
-  admin: ['admin', 'manager'],
-  super:['super', 'admin', 'manager']
+  manager: ['manager'],
+  admin: ['admin', 'manager', "ownerUsers"],
+  super:['super', 'admin', 'manager', "ownerUsers"]
 };
 
 const roles = Object.keys(allRoles);
