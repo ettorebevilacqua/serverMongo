@@ -22,7 +22,7 @@ const domandaSchema = mongoose.Schema({
 const moduloSchema = mongoose.Schema(withRecordInfo({
     title: {
         type: String,
-        required: true,
+        required: false,
         trim: true,
     },
     domande: [domandaSchema],
