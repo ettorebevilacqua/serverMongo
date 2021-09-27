@@ -16,6 +16,21 @@ const domandaSchema = mongoose.Schema({
         required: false,
         trim: true,
     },
+    ratingStart: {
+        type: String,
+        required: false,
+        trim: true,
+    },
+    ratingEnd: {
+        type: String,
+        required: false,
+        trim: true,
+    },
+    ratingMax: {
+        type: Number,
+        required: false,
+        trim: true,
+    },
     risposte: [{}],
 });
 
