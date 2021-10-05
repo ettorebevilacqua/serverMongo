@@ -33,7 +33,7 @@ const questionSchema = mongoose.Schema(withRecordInfo({
         required: true,
         trim: true,
     },
-    titoloModulo: {
+    titoloQuestion: {
         type: String,
         required: false,
         trim: true,
