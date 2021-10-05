@@ -31,6 +31,11 @@ const domandaSchema = mongoose.Schema({
         required: false,
         trim: true,
     },
+    rating: {
+        type: Number,
+        required: false,
+        trim: true,
+    },
     risposte: [{}],
 });
 
