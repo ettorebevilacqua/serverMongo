@@ -5,6 +5,7 @@ const moduliRoute = require('./moduli.route');
 const questionRoute = require('./question.route');
 const viewRoute = require('./view.route');
 const docsRoute = require('./docs.route');
+const corsiRoute = require('./corsi.route');
 const config = require('../../config/config');
 
 const router = express.Router();
@@ -29,6 +30,10 @@ const defaultRoutes = [
   {
     path: '/view',
     route: viewRoute,
+  },
+  {
+    path: '/corsi',
+    route: corsiRoute,
   },
 ];
 
