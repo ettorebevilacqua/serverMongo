@@ -3,9 +3,9 @@ const auth = require('../../middlewares/auth');
 const validate = require('../../middlewares/validate');
 const modelValidation = require('../../validations/model.validation');
 const modelController = require('../../controllers/model.controller');
-const { Corsi } = require('../../models');
+const { Ambiti } = require('../../models');
 
-const modelCtrl = modelController(Corsi);
+const modelCtrl = modelController(Ambiti);
 
 const router = express.Router();
 
@@ -26,17 +26,17 @@ module.exports = router;
 /**
  * @swagger
  * tags:
- *   name: Corsi
- *   description: Corsi management and retrieval
+ *   name: Ambiti
+ *   description: Ambiti management and retrieval
  */
 
 /**
  * @swagger
- * /corsi:
+ * /ambiti:
  *   post:
- *     summary: Create a Corso
- *     description: Only admins can create other Corso.
- *     tags: [Corsi]
+ *     summary: Create a ambito
+ *     description: Only admins can create other ambito.
+ *     tags: [Ambiti]
  *     security:
  *       - bearerAuth: []
  *     requestBody:
@@ -46,13 +46,13 @@ module.exports = router;
  *           schema:
  *             type: object
  *             properties:
- *               ente:
+ *               ambito:
+ *                 type: string
+*               descr:
  *                 type: string
  *             example:
- *              ente: ente example,
- *              titolo: titolo corso,
- *              finanziatore: mycorso,
- *              sede: milano
+ *              ambito: newAmbito,
+ *              descr: generale
  *
  *     responses:
  *       "201":
@@ -60,16 +60,16 @@ module.exports = router;
  *         content:
  *           application/json:
  *             schema:
- *                $ref: '#/components/schemas/Corsi'
+ *                $ref: '#/components/schemas/Ambiti'
  *       "401":
  *         $ref: '#/components/responses/Unauthorized'
  *       "403":
  *         $ref: '#/components/responses/Forbidden'
  *
  *   get:
- *     summary: Get all Corsi
- *     description: Only admins can retrieve all Corsi.
- *     tags: [Corsi]
+ *     summary: Get all Ambiti
+ *     description: Only admins can retrieve all Ambiti.
+ *     tags: [Ambiti]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -84,7 +84,7 @@ module.exports = router;
  *           type: integer
  *           minimum: 1
  *         default: 10
- *         description: Maximum number of corsi
+ *         description: Maximum number of ambiti
  *       - in: query
  *         name: page
  *         schema:
@@ -103,7 +103,7 @@ module.exports = router;
  *                 results:
  *                   type: array
  *                   items:
- *                     $ref: '#/components/schemas/Corsi'
+ *                     $ref: '#/components/schemas/Ambiti'
  *                 page:
  *                   type: integer
  *                   example: 1
@@ -124,11 +124,11 @@ module.exports = router;
 
 /**
  * @swagger
- * /corsi/{id}:
+ * /ambiti/{id}:
  *   get:
- *     summary: Get a Corso
+ *     summary: Get a ambito
  *     description: Logged in users can fetch only their own user information. Only admins can fetch other users.
- *     tags: [Corsi]
+ *     tags: [Ambiti]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -137,14 +137,14 @@ module.exports = router;
  *         required: true
  *         schema:
  *           type: string
- *         description: User id
+ *         description: Ambito id
  *     responses:
  *       "200":
  *         description: OK
  *         content:
  *           application/json:
  *             schema:
- *                $ref: '#/components/schemas/Corsi'
+ *                $ref: '#/components/schemas/Ambiti'
  *       "401":
  *         $ref: '#/components/responses/Unauthorized'
  *       "403":
@@ -153,9 +153,9 @@ module.exports = router;
  *         $ref: '#/components/responses/NotFound'
  *
  *   patch:
- *     summary: Update a Corso
+ *     summary: Update a ambito
  *     description: Logged in users can only update their own information. Only admins can update other users.
- *     tags: [Corsi]
+ *     tags: [Ambiti]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -164,7 +164,7 @@ module.exports = router;
  *         required: true
  *         schema:
  *           type: string
- *         description: corso id
+ *         description: ambito id
  *     requestBody:
  *       required: true
  *       content:
@@ -175,14 +175,15 @@ module.exports = router;
  *               title:
  *                 type: string
  *             example:
- *               title: fake name
+ *               email: new@mail.com
+ *               phone: 11111111
  *     responses:
  *       "200":
  *         description: OK
  *         content:
  *           application/json:
  *             schema:
- *                $ref: '#/components/schemas/Corsi'
+ *                $ref: '#/components/schemas/Ambiti'
  *       "401":
  *         $ref: '#/components/responses/Unauthorized'
  *       "403":
@@ -191,9 +192,9 @@ module.exports = router;
  *         $ref: '#/components/responses/NotFound'
  *
  *   delete:
- *     summary: Delete a Corso
+ *     summary: Delete a ambito
  *     description: Logged in users can delete only themselves. Only admins can delete other users.
- *     tags: [Corsi]
+ *     tags: [Ambiti]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -202,7 +203,7 @@ module.exports = router;
  *         required: true
  *         schema:
  *           type: string
- *         description: corso id
+ *         description: ambito id
  *     responses:
  *       "200":
  *         description: No content

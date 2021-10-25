@@ -3,9 +3,9 @@ const auth = require('../../middlewares/auth');
 const validate = require('../../middlewares/validate');
 const modelValidation = require('../../validations/model.validation');
 const modelController = require('../../controllers/model.controller');
-const { Corsi } = require('../../models');
+const { Docenti } = require('../../models');
 
-const modelCtrl = modelController(Corsi);
+const modelCtrl = modelController(Docenti);
 
 const router = express.Router();
 
@@ -26,17 +26,17 @@ module.exports = router;
 /**
  * @swagger
  * tags:
- *   name: Corsi
- *   description: Corsi management and retrieval
+ *   name: Docenti
+ *   description: Docenti management and retrieval
  */
 
 /**
  * @swagger
- * /corsi:
+ * /docenti:
  *   post:
- *     summary: Create a Corso
- *     description: Only admins can create other Corso.
- *     tags: [Corsi]
+ *     summary: Create a docente
+ *     description: Only admins can create other docente.
+ *     tags: [Docenti]
  *     security:
  *       - bearerAuth: []
  *     requestBody:
@@ -49,10 +49,10 @@ module.exports = router;
  *               ente:
  *                 type: string
  *             example:
- *              ente: ente example,
- *              titolo: titolo corso,
- *              finanziatore: mycorso,
- *              sede: milano
+ *              nome: mario,
+ *              cognome: rossi,
+ *              email: rossi@email.com,
+ *              phone: 33442244
  *
  *     responses:
  *       "201":
@@ -60,16 +60,16 @@ module.exports = router;
  *         content:
  *           application/json:
  *             schema:
- *                $ref: '#/components/schemas/Corsi'
+ *                $ref: '#/components/schemas/Docenti'
  *       "401":
  *         $ref: '#/components/responses/Unauthorized'
  *       "403":
  *         $ref: '#/components/responses/Forbidden'
  *
  *   get:
- *     summary: Get all Corsi
- *     description: Only admins can retrieve all Corsi.
- *     tags: [Corsi]
+ *     summary: Get all Docenti
+ *     description: Only admins can retrieve all Docenti.
+ *     tags: [Docenti]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -84,7 +84,7 @@ module.exports = router;
  *           type: integer
  *           minimum: 1
  *         default: 10
- *         description: Maximum number of corsi
+ *         description: Maximum number of docenti
  *       - in: query
  *         name: page
  *         schema:
@@ -103,7 +103,7 @@ module.exports = router;
  *                 results:
  *                   type: array
  *                   items:
- *                     $ref: '#/components/schemas/Corsi'
+ *                     $ref: '#/components/schemas/Docenti'
  *                 page:
  *                   type: integer
  *                   example: 1
@@ -124,11 +124,11 @@ module.exports = router;
 
 /**
  * @swagger
- * /corsi/{id}:
+ * /docenti/{id}:
  *   get:
- *     summary: Get a Corso
+ *     summary: Get a docente
  *     description: Logged in users can fetch only their own user information. Only admins can fetch other users.
- *     tags: [Corsi]
+ *     tags: [Docenti]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -137,14 +137,14 @@ module.exports = router;
  *         required: true
  *         schema:
  *           type: string
- *         description: User id
+ *         description: Docente id
  *     responses:
  *       "200":
  *         description: OK
  *         content:
  *           application/json:
  *             schema:
- *                $ref: '#/components/schemas/Corsi'
+ *                $ref: '#/components/schemas/Docenti'
  *       "401":
  *         $ref: '#/components/responses/Unauthorized'
  *       "403":
@@ -153,9 +153,9 @@ module.exports = router;
  *         $ref: '#/components/responses/NotFound'
  *
  *   patch:
- *     summary: Update a Corso
+ *     summary: Update a docente
  *     description: Logged in users can only update their own information. Only admins can update other users.
- *     tags: [Corsi]
+ *     tags: [Docenti]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -164,7 +164,7 @@ module.exports = router;
  *         required: true
  *         schema:
  *           type: string
- *         description: corso id
+ *         description: docente id
  *     requestBody:
  *       required: true
  *       content:
@@ -175,14 +175,15 @@ module.exports = router;
  *               title:
  *                 type: string
  *             example:
- *               title: fake name
+ *               email: new@mail.com
+ *               phone: 11111111
  *     responses:
  *       "200":
  *         description: OK
  *         content:
  *           application/json:
  *             schema:
- *                $ref: '#/components/schemas/Corsi'
+ *                $ref: '#/components/schemas/Docenti'
  *       "401":
  *         $ref: '#/components/responses/Unauthorized'
  *       "403":
@@ -191,9 +192,9 @@ module.exports = router;
  *         $ref: '#/components/responses/NotFound'
  *
  *   delete:
- *     summary: Delete a Corso
+ *     summary: Delete a docente
  *     description: Logged in users can delete only themselves. Only admins can delete other users.
- *     tags: [Corsi]
+ *     tags: [Docenti]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -202,7 +203,7 @@ module.exports = router;
  *         required: true
  *         schema:
  *           type: string
- *         description: corso id
+ *         description: docente id
  *     responses:
  *       "200":
  *         description: No content
