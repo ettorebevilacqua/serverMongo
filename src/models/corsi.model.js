@@ -28,16 +28,11 @@ const corsiSchema = mongoose.Schema(withRecordInfo({
         trim: true,
     },
     ambito: {
-        type: String,
+        type: [{}],
         required: false,
         trim: true,
     },
     durata: {
-        type: Number,
-        required: false,
-        trim: true,
-    },
-    durataOre: {
         type: Number,
         required: false,
         trim: true,
