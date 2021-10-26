@@ -7,10 +7,14 @@ const withRecordInfo = require('./withRecordInfo.schema');
 
 
 const corsiSchema = mongoose.Schema(withRecordInfo({
-    ente: {
+    idEnte: {
         type: String,
         required: false,
         trim: true,
+    },
+    codice: {
+        type: Number,
+        required: false,
     },
     titolo: {
         type: String,
@@ -28,14 +32,13 @@ const corsiSchema = mongoose.Schema(withRecordInfo({
         trim: true,
     },
     ambito: {
-        type: [{}],
+        type: [],
         required: false,
         trim: true,
     },
     durata: {
         type: Number,
         required: false,
-        trim: true,
     },
     sede: {
         type: String,
@@ -64,7 +67,6 @@ corsiSchema.pre('save', async function (next) {
     const corsi = this;
     next();
 });
-
 
 /**
  * @typedef Modulo

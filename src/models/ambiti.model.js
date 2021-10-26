@@ -11,6 +11,11 @@ const ambitiSchema = mongoose.Schema(withRecordInfo({
         required: false,
         trim: true,
     },
+    idEnte: {
+        type: String,
+        required: false,
+        trim: true,
+    },
     descr: {
         type: String,
         required: false,

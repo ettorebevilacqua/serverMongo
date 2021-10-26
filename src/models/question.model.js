@@ -12,6 +12,11 @@ const questionSchema = mongoose.Schema(withRecordInfo({
         trim: true,
         key: true,
     },
+    idEnte: {
+        type: String,
+        required: false,
+        trim: true,
+    },
     idquestion: {
         type: String,
         required: true,

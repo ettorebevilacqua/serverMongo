@@ -29,6 +29,11 @@ const risposte =mongoose.Schema(withRecordInfo({
         required: true,
         trim: true,
     },
+    idEnte: {
+        type: String,
+        required: false,
+        trim: true,
+    },
     risposte: [rispostaSchema],
 }));
 

@@ -6,6 +6,10 @@ const { roles } = require('../config/roles');
 const withRecordInfo = require('./withRecordInfo.schema');
 
 const docentiSchema = mongoose.Schema(withRecordInfo({
+    idEnte: {
+        type: String,
+        required: false,
+    },
     nome: {
         type: String,
         required: false,
