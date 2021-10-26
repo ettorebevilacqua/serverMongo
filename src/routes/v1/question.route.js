@@ -3,10 +3,10 @@ const auth = require('../../middlewares/auth');
 const validate = require('../../middlewares/validate');
 const modelValidation = require('../../validations/model.validation');
 const modelController = require('../../controllers/model.controller');
-const { Question } = require('../../models');
+const { Question, addEnte } = require('../../models');
 const questionCtrl = require('../../controllers/question.controller');
 
-const modelCtrl = modelController(Question);
+const modelCtrl = modelController(Question, { onCreate: addEnte() });
 
 const router = express.Router();
 

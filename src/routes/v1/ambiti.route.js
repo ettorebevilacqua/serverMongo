@@ -3,9 +3,9 @@ const auth = require('../../middlewares/auth');
 const validate = require('../../middlewares/validate');
 const modelValidation = require('../../validations/model.validation');
 const modelController = require('../../controllers/model.controller');
-const { Ambiti } = require('../../models');
+const { Ambiti, addEnte } = require('../../models');
 
-const modelCtrl = modelController(Ambiti);
+const modelCtrl = modelController(Ambiti, { onCreate: addEnte() });
 
 const router = express.Router();
 
