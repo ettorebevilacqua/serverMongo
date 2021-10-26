@@ -10,18 +10,16 @@ module.exports.viewService = require('./views.service');
 module.exports.questionService = require('./question.service');
 
 function ModelService(Model) {
-    const create = async (dataBody, user, appFunct, errorMessage) => {
-        // if (appFunct && Model[appFunct] && await Model[appFunct](dataBody, user)) {
-        if (Model[appFunct]) {
-            return Model[appFunct](dataBody, user);
-        }
 
+    const create = async (dataBody, user, appFunct, errorMessage) => {
         dataBody._info = { uc: user && user.id };
-        const [dataBodyModel, error] = Model.beforeServiceSave ? await Model.beforeServiceSave(Model, user, dataBody) : [dataBody, null];
+
+        const data = !appFunct ? dataBody : appFunct(dataBody, user);
+        /* const [dataBodyModel, error] = Model.beforeServiceSave ? await Model.beforeServiceSave(Model, user, dataBody) : [dataBody, null];
         if (error) {
             throw new ApiError(httpStatus.BAD_REQUEST, error);
-        }
-        return Model.create(dataBody);
+        } */
+        return Model.create(data);
     };
 
     /**
@@ -33,7 +31,7 @@ function ModelService(Model) {
     * @param {number} [options.page] - Current page (default = 1)
     * @returns {Promise<QueryResult>}
     */
-    const query = async (filter, options) => {
+    const query = async (filter, options, user) => {
         const Models = await Model.paginate(filter, options);
         return Models;
     };
