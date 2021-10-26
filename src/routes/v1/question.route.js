@@ -6,7 +6,7 @@ const modelController = require('../../controllers/model.controller');
 const { Question, addEnte } = require('../../models');
 const questionCtrl = require('../../controllers/question.controller');
 
-const modelCtrl = modelController(Question, { onCreate: addEnte() });
+const modelCtrl = modelController(Question, { onCreate: addEnte(), filterByEnte: true});
 
 const router = express.Router();
 

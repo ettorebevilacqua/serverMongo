@@ -3,10 +3,9 @@ const auth = require('../../middlewares/auth');
 const validate = require('../../middlewares/validate');
 const modelValidation = require('../../validations/model.validation');
 const modelController = require('../../controllers/model.controller');
-const { Docenti, addEnte } = require('../../models');
+const { Docenti, addEnte, filterByEnte } = require('../../models');
 
-
-const modelCtrl = modelController(Docenti, { onCreate: addEnte() });
+const modelCtrl = modelController(Docenti, { onCreate: addEnte(), filterByEnte: true });
 
 const router = express.Router();
 

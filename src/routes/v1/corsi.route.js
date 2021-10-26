@@ -5,7 +5,7 @@ const modelValidation = require('../../validations/model.validation');
 const modelController = require('../../controllers/model.controller');
 const { Corsi, addEnte } = require('../../models');
 
-const modelCtrl = modelController(Corsi, { onCreate: addEnte() });
+const modelCtrl = modelController(Corsi, { onCreate: addEnte(), filterByEnte: true});
 
 const router = express.Router();
 
