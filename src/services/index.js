@@ -31,7 +31,7 @@ function ModelService(Model) {
     * @param {number} [options.page] - Current page (default = 1)
     * @returns {Promise<QueryResult>}
     */
-    const query = async (filter, options, user) => {
+    const query = async (filter, options ) => {
         const Models = await Model.paginate(filter, options);
         return Models;
     };
