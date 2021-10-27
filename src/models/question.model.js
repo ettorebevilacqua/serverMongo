@@ -28,6 +28,9 @@ const questionSchema = mongoose.Schema(withRecordInfo({
         required: false,
         trim: true,
     },
+    codiceCorso: {
+        type: Number,
+    },
     corso: {
         type: String,
         required: false,
@@ -47,7 +50,6 @@ const questionSchema = mongoose.Schema(withRecordInfo({
     numPartecipanti: {
         type: Number,
         required: false,
-        trim: true,
     },
     closeAt: {
         type: Date,
