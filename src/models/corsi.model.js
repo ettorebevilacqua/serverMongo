@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
 const bcrypt = require('bcryptjs');
-const { toJSON, paginate } = require('./plugins');
+const { toJSON, paginate, incrementCounter } = require('./plugins');
 const { roles } = require('../config/roles');
 const withRecordInfo = require('./withRecordInfo.schema');
 
@@ -65,6 +65,7 @@ corsiSchema.plugin(paginate);
 
 corsiSchema.pre('save', async function (next) {
     const corsi = this;
+    this.codice= await incrementCounter('corsi' + corsi.idEnte);
     next();
 });
 
