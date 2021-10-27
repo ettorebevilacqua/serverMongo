@@ -6,6 +6,7 @@ module.exports.Question = require('./question.model');
 module.exports.Corsi = require('./corsi.model');
 module.exports.Docenti = require('./docenti.model');
 module.exports.Ambiti = require('./ambiti.model');
+module.exports.Lists = require('./lists.model');
 module.exports.Modulo = Modulo;
 module.exports.QuestionModuli = QuestionModuli;
 

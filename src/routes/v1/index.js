@@ -8,6 +8,7 @@ const docsRoute = require('./docs.route');
 const corsiRoute = require('./corsi.route');
 const docentiRoute = require('./docenti.route');
 const ambitiRoute = require('./ambiti.route');
+const listsRoute = require('./lists.route');
 const config = require('../../config/config');
 
 const router = express.Router();
@@ -44,6 +45,10 @@ const defaultRoutes = [
   {
     path: '/ambiti',
     route: ambitiRoute,
+  },
+  {
+    path: '/lists',
+    route: listsRoute,
   },
 ];
 

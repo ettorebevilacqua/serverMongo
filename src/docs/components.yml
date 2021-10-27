@@ -1,5 +1,30 @@
 components:
   schemas:
+    ItemLists:
+      type: object
+      properties:
+        label:
+          type: string
+          example: 'new item'
+
+        value:
+          type: string
+        position:
+          type: integer
+        checked:
+          type: boolean
+    Lists:
+      type: object
+      properties:
+        name:
+          type: string
+        descr:
+          type: string
+        list:
+          type: array
+          items: #/components/schemas/ItemLists
+          example: [{label: 'sss'}]
+
     User:
       type: object
       properties:
