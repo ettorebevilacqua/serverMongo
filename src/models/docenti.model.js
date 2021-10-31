@@ -10,6 +10,11 @@ const docentiSchema = mongoose.Schema(withRecordInfo({
         type: String,
         required: false,
     },
+    tipologia:{
+        type: String,
+        required: true,
+        trim: true,
+    },
     nome: {
         type: String,
         required: false,
