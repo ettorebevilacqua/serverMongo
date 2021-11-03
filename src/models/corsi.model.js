@@ -34,7 +34,6 @@ const corsiSchema = mongoose.Schema(withRecordInfo({
     ambito: {
         type: [],
         required: false,
-        trim: true,
     },
     durata: {
         type: Number,
