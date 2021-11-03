@@ -56,9 +56,8 @@ const docentiSchema = mongoose.Schema(withRecordInfo({
         trim: true,
     },
     ambito: {
-        type: String,
+        type: [],
         required: false,
-        trim: true,
     },
     cf: {
         type: String,

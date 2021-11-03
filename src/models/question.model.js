@@ -6,12 +6,6 @@ const { roles } = require('../config/roles');
 const withRecordInfo = require('./withRecordInfo.schema');
 
 const questionSchema = mongoose.Schema(withRecordInfo({
-    iduser: {
-        type: String,
-        required: true,
-        trim: true,
-        key: true,
-    },
     idEnte: {
         type: String,
         required: false,
