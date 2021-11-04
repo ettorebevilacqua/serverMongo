@@ -18,9 +18,8 @@ const questionSchema = mongoose.Schema(withRecordInfo({
         trim: true,
     },
     idcorso: {
-        type: String,
-        required: false,
-        trim: true,
+        type: mongoose.Schema.ObjectId,
+        ref: 'Corsi',
     },
     codiceCorso: {
         type: Number,
@@ -60,7 +59,7 @@ questionSchema.statics.beforeServiceSave = async (Model, user, dataBody, id = 0)
     const question = this;
     const { idquestion, idcorso, closeAt, _info, iduser } = { ...dataBody };
 
-    if(question && question.closeAt && !!closeAt){
+    if (question && question.closeAt && !!closeAt) {
         return [null, ' ' + ' question has close '];
     }
 
@@ -68,7 +67,9 @@ questionSchema.statics.beforeServiceSave = async (Model, user, dataBody, id = 0)
     if (!!found && found._id != id) {
         return [null, 'idcorso ' + idcorso + ' è già presente '];
     }
-    // console.log('xxxx to save dataBody', dataBody);
+
+    dataBody.idcorso = mongoose.Types.ObjectId(dataBody.idcorso);
+    console.log('xxxx to save dataBody', dataBody);
 
     if (_info && _info.uc) { // && (!question || !iduser)) {
         dataBody.iduser = question && question._info && question._info.uc ? question._info.uc : dataBody._info.uc;
@@ -86,5 +87,14 @@ questionSchema.pre('save', async function (next) {
  * @typedef Modulo
  */
 const Question = mongoose.model('Question', questionSchema);
-
 module.exports = Question;
+
+/*
+Question.aggregate(queryDocentiActivity).exec(function (err, results) {
+    console.log('aggregate x', err, JSON.stringify(results,null, 3 ));
+    // console.log('aggregate x', err, results.map(el => el.corsi));
+    if (err) throw err;
+    return results;
+});
+
+*/
