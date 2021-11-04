@@ -1,5 +1,5 @@
 const queryDocentiActivity = idEnte => [
-    { "$match": { "idEnte": idEnte } },
+    { "$match": { "idEnte": idEnte + '' } },
     { $lookup: { from: "corsis", localField: "idcorso", foreignField: "_id", as: "corso" } },
     { "$unwind": "$corso" },
     { "$unwind": "$docenti" },
