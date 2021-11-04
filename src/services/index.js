@@ -8,6 +8,7 @@ module.exports.moduliService = require('./moduli.service');
 module.exports.userService = require('./user.service');
 module.exports.viewService = require('./views.service');
 module.exports.questionService = require('./question.service');
+module.exports.guestService = require('./guest.service');
 
 function ModelService(Model) {
 
