@@ -4,10 +4,16 @@ const validate = require('../../middlewares/validate');
 const modelValidation = require('../../validations/model.validation');
 const modelController = require('../../controllers/model.controller');
 const { Docenti, addEnte, filterByEnte } = require('../../models');
+const questionCtrl = require('../../controllers/question.controller');
+const questinValidation = require('../../validations/question.validation');
 
 const modelCtrl = modelController(Docenti, { onCreate: addEnte(), filterByEnte: true });
 
 const router = express.Router();
+
+router
+    .route('/activity')
+    .get(auth('manager'), validate({}), questionCtrl.getDocentiActivity);
 
 router
     .route('/')
@@ -19,6 +25,7 @@ router
     .get(auth('manager'), validate(modelValidation.getItem), modelCtrl.getItem)
     .patch(auth('manager'), validate(modelValidation.update), modelCtrl.update)
     .delete(auth('manager'), validate(modelValidation.delete), modelCtrl.delete);
+
 
 
 module.exports = router;

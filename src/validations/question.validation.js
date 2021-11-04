@@ -37,10 +37,20 @@ const deleteModel = {
   }),
 };
 
+const queryActvity = {
+  params: Joi.object().keys({
+    sortBy: Joi.string(),
+    limit: Joi.number().integer(),
+    page: Joi.number().integer(),
+    full: Joi.string(),
+  }),
+};
+
 module.exports = {
   create,
   getItems,
   getItem,
   update,
   delete: deleteModel,
+  queryActvity,
 };

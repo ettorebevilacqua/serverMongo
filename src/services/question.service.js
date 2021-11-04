@@ -7,17 +7,21 @@ const { authService, tokenService: { generateToken }, emailService: { sendEmail 
 const { tokenTypes } = require('../config/tokens');
 const pick = require('../utils/pick');
 const { generateQuestionToken, verifyQuestionToken } = require('../services/token.service');
+const { queryDocentiActivity } = require('../querys/');
 
 const getPathUrl = (host, token) => host + '/guest/compile/' + token;
 
-const msgQuestionario = ({ url, nome, titolo }) => `
-Gentile ${nome},
-il nuovo questionario ${titolo} è disponibile. :
+// console.log('queryDocentiActivity', queryDocentiActivity.queryDocentiActivity('a'));
 
-<a href="${url}" >click Qui per aprire il questionario </a>
-
+const msgQuestionario = ({ url, nome, cognome, titolo }) => `
+<p>Gentile ${nome}, ${cognome}</p>
+<P>il nuovo questionario ${titolo} è disponibile. :</p>
+<p>
+<a href="${url}" >Click qui per aprire il questionario </a>
+</p>
+<p>
 La preghiamo di prestare attenzione nel rispondere a tutte le domande per l'invio dei risultati.
-
+</p>
 `;
 
 const questionSendMail = async (_id, host) => {
@@ -25,7 +29,7 @@ const questionSendMail = async (_id, host) => {
     const listPartecipanti = question.partecipanti;
     const idSent = [];
     const listPromise = [];
-    
+
     const results = listPartecipanti.map(async (item, idx) => {
         const { email, id, nome } = item || {};
 
@@ -40,6 +44,7 @@ const questionSendMail = async (_id, host) => {
             url: pathUrl,
             titolo: question.titolo,
             nome: item.nome,
+            cognome: item.cognome, 
         };
         item.token = tokenAccess;
         item.sendCount = (item.sendCount || 0) +1;
@@ -78,8 +83,16 @@ const questionSendMail = async (_id, host) => {
 
 }
 
+const getDocentiActivity = async (_id, idEnte) => {
+    const query = queryDocentiActivity.queryDocentiActivity(idEnte);
+    const list = await Question.aggregate(query); //.exec(function (err, results) {
+    // console.log(query);
+    return list;
+}
+
 module.exports = {
-    questionSendMail
+    questionSendMail,
+    getDocentiActivity,
 };
 
 // questionSendMail('6107fcb1bf9939b6183f566e', 'local/');

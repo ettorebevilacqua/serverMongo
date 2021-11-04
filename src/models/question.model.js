@@ -90,11 +90,14 @@ const Question = mongoose.model('Question', questionSchema);
 module.exports = Question;
 
 /*
-Question.aggregate(queryDocentiActivity).exec(function (err, results) {
+const { queryDocentiActivity } = require('../querys/');
+const query = queryDocentiActivity.queryDocentiActivity(1);
+
+Question.aggregate(query).exec(function (err, results) {
     console.log('aggregate x', err, JSON.stringify(results,null, 3 ));
     // console.log('aggregate x', err, results.map(el => el.corsi));
     if (err) throw err;
     return results;
 });
-
 */
+
