@@ -69,7 +69,7 @@ questionSchema.statics.beforeServiceSave = async (Model, user, dataBody, id = 0)
     }
 
     dataBody.idcorso = mongoose.Types.ObjectId(dataBody.idcorso);
-    console.log('xxxx to save dataBody', dataBody);
+    // console.log('xxxx to save dataBody', dataBody);
 
     if (_info && _info.uc) { // && (!question || !iduser)) {
         dataBody.iduser = question && question._info && question._info.uc ? question._info.uc : dataBody._info.uc;
@@ -94,7 +94,7 @@ const { queryDocentiActivity } = require('../querys/');
 const query = queryDocentiActivity.queryDocentiActivity(1);
 
 Question.aggregate(query).exec(function (err, results) {
-    console.log('aggregate x', err, JSON.stringify(results,null, 3 ));
+    // console.log('aggregate x', err, JSON.stringify(results,null, 3 ));
     // console.log('aggregate x', err, results.map(el => el.corsi));
     if (err) throw err;
     return results;
