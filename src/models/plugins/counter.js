@@ -15,10 +15,10 @@ async function incrementCounter(schemaName, callback) {
     try {
         const res = await Counter.findOneAndUpdate({ _id: schemaName },
             { $inc: { count: 1 } }, { returnOriginal: false, upsert: true });
-        console.log('ris xxx', res);
+        // console.log('ris xxx', res);
         return res.count;
     } catch (err) {
-        console.log('eee', err);
+        // console.log('eee', err);
         return null;
     }
     /*  , function (err, result) {
