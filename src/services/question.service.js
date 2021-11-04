@@ -87,7 +87,7 @@ const getDocentiActivity = async (_id, idEnte) => {
     const query = queryDocentiActivity.queryDocentiActivity(idEnte);
     const list = await Question.aggregate(query); //.exec(function (err, results) {
     // console.log(query);
-    return list;
+    return { results:list };
 }
 
 module.exports = {
