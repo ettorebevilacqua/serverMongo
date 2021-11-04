@@ -64,6 +64,12 @@ const docentiSchema = mongoose.Schema(withRecordInfo({
         required: false,
         trim: true,
     },
+    qualifica: {
+        data: String,
+        responsabile: String,
+        modalita: String,
+        altro: String,
+    }
 }));
 
 // add plugin that converts mongoose to json
