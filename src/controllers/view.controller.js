@@ -28,7 +28,6 @@ const getQuestions = catchAsync(async (req, res) => {
     const filter = { ...idQuestion, ...filterPick, ...iduserFilter, ...closeAtFilter };
     const question = await viewService.getQuestions(filter, options);
     res.send(question);
-    console.log('getQuestions filter', filter);
 });
 
 module.exports = { getQuestions, };
