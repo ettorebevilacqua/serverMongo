@@ -12,10 +12,8 @@ const questionSchema = mongoose.Schema(withRecordInfo({
         trim: true,
     },
     idquestion: {
-        type: String,
-        required: true,
-        key: true,
-        trim: true,
+        type: mongoose.Schema.ObjectId,
+        ref: 'QuestionModuli',
     },
     idcorso: {
         type: mongoose.Schema.ObjectId,
@@ -69,6 +67,7 @@ questionSchema.statics.beforeServiceSave = async (Model, user, dataBody, id = 0)
     }
 
     dataBody.idcorso = mongoose.Types.ObjectId(dataBody.idcorso);
+    dataBody.idquestion = mongoose.Types.ObjectId(dataBody.idquestion);
     // console.log('xxxx to save dataBody', dataBody);
 
     if (_info && _info.uc) { // && (!question || !iduser)) {

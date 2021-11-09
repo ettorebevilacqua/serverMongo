@@ -29,22 +29,25 @@ const questionSendMail = async (_id, host) => {
     const listPartecipanti = question.partecipanti;
     const idSent = [];
     const listPromise = [];
-
+    // console.log('questionSendMail idquestion', question.id);
     const results = listPartecipanti.map(async (item, idx) => {
         const { email, id, nome } = item || {};
 
         if (!email || item.sent) {
-            return false;
+             return false;
         }
         // if (idx > 1) return true; // limit for test email send
+        // console.log('questionSendMail part idquestion ', question.id);
 
-        const tokenAccess = item.token ? item.token : generateQuestionToken(id, email );
+        const tokenAccess = item.token ? item.token : generateQuestionToken(question.id, email );
+
+
         const pathUrl = getPathUrl(host, tokenAccess);
         const param = {
             url: pathUrl,
             titolo: question.titolo,
             nome: item.nome,
-            cognome: item.cognome, 
+            cognome: item.cognome,
         };
         item.token = tokenAccess;
         item.sendCount = (item.sendCount || 0) +1;
