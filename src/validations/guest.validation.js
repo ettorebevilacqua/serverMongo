@@ -14,6 +14,12 @@ const getItems = {
   }),
 };
 
+const getGuestToken = {
+  params: Joi.object().keys({
+    token: Joi.string(),
+  }),
+};
+
 const getItem = {
   params: Joi.object().keys({
     id: Joi.string().custom(objectId),
@@ -38,4 +44,5 @@ module.exports = {
   getItem,
   update,
   delete: deleteModel,
+  getGuestToken,
 };

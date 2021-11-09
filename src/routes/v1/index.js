@@ -9,6 +9,7 @@ const corsiRoute = require('./corsi.route');
 const docentiRoute = require('./docenti.route');
 const ambitiRoute = require('./ambiti.route');
 const listsRoute = require('./lists.route');
+const guestRoute = require('./guest.route');
 const config = require('../../config/config');
 
 const router = express.Router();
@@ -49,6 +50,10 @@ const defaultRoutes = [
   {
     path: '/lists',
     route: listsRoute,
+  },
+  {
+    path: '/guest',
+    route: guestRoute,
   },
 ];
 

@@ -1,24 +1,29 @@
 const express = require('express');
 const auth = require('../../middlewares/auth');
 const validate = require('../../middlewares/validate');
+const { authGuest } = require('../../middlewares/tokenGuest');
 const guestValidation = require('../../validations/guest.validation');
 const guestCtrl = require('../../controllers/guest.controller');
 
-const modelCtrl = modelController(Corsi, { onCreate: addEnte(), filterByEnte: true});
-
 const router = express.Router();
 
+// GET' http://localhost/v1/guest/a/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImZlQGhoLml0IiwiaWF0IjoxNjM2MzQ4MjM0fQ.RlopmKCgA0YbOuXHsqmn3B59YT6Zdoxh5MtVTEogIuw
+// curl -X GET  'http://localhost/v1/guest/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImZlQGhoLml0IiwiaWF0IjoxNjM2MzQ4MjM0fQ.RlopmKCgA0YbOuXHsqmn3B59YT6Zdoxh5MtVTEogIuw'
+// curl -X GET  'http://localhost/v1/guest/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxODIwOTE5ZjllYzEyZjRjZWYxZmUwYSIsImVtYWlsIjoiZmVAaGguaXQiLCJpYXQiOjE2MzYzODk5OTF9.R-kT_MNIsSO6U54-cpkPQHy7SB9vkA2LhOf_EHFfBiA'
+// router.get('/a/:token', validate(guestValidation.getGuestToken), guestCtrl.getQuestion);
 router
     .route('/')
-    .post(auth('guest'), validate(guestValidation.create), guestCtrl.create)
-    .get(auth('guest'), validate(guestValidation.getItems), guestCtrl.getItems);
+    // .post(auth('guest'), validate(guestValidation.create), guestCtrl.create)
+    .get(auth('guest'), validate(guestValidation.getItems), guestCtrl.getQuestion);
 
-router
-    .route('/:id')
-    .get(auth('guest'), validate(guestValidation.getItem), guestCtrl.getItem)
-    .patch(auth('guest'), validate(guestValidation.update), guestCtrl.update)
-    .delete(auth('guest'), validate(guestValidation.delete), guestCtrl.delete);
+// router.get('/a/:token', validate(guestValidation.getGuestToken), guestCtrl.getQuestion);
 
+
+ router
+    .route('/:token')
+    .get(authGuest('guest'), validate(guestValidation.getGuestToken), guestCtrl.getQuestion)
+     //.patch(auth('guest'), validate(guestValidation.update), model.update)
+    // .delete(auth('guest'), validate(guestValidation.delete), guestCtrl.delete);
 
 module.exports = router;
 

@@ -14,5 +14,13 @@ const getDataFromToken = (...requiredRights) => async (req, res, next) => {
         .catch((err) => next(err));
 };
 
+const authGuest = (...requiredRights) => async (req, res, next) => {
+    console.log('xxxxxxxxxxxxx' );
+    return new Promise((resolve, reject) => {
+      resolve();
+    })
+      .then(() => next())
+      .catch((err) => next());
+  };
 
-module.exports = { getDataFromToken };
+module.exports = { getDataFromToken, authGuest };

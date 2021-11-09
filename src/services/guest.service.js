@@ -1,5 +1,5 @@
 const httpStatus = require('http-status');
-const { Modul, QuestionModuli } = require('../models');
+const { Modul, QuestionModuli, Question } = require('../models');
 const ApiError = require('../utils/ApiError');
 
 /**
@@ -16,9 +16,17 @@ const ApiError = require('../utils/ApiError');
   return Moduli;
 };
 
-const getQuestionsModuli = async (filter, options) => {
-  return QuestionModuli.find(filter).populate('moduli');
+const getQuestionsModuli = async (filter) => {
+  return  await Question.findOne(filter).populate('idcorso')
+  .populate({
+    path: "idquestion", // populate blogs
+    populate: {
+       path: "moduli" // in blogs, populate comments
+    }
+ })
+ .populate('idcorso');
 };
+
 
 module.exports = {
   getQuestionsModuli
