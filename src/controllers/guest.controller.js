@@ -10,24 +10,39 @@ const trowError = (status, msgText) => {
     throw new ApiError(status, msgText);
 }
 
-const getQuestion = catchAsync(async (req, res) => {
-    const token = req.params.token;
+const getGuestFromToken = (token) => {
     if (!token) {
         throw new ApiError(httpStatus.UNAUTHORIZED, 'partecipante non autorizzato');
     }
     // console.log('token ppppppppppp', token);
-    const { id, email } = tokenService.verifyQuestionToken(token);
+    let param = null;
+    try {
+        param = tokenService.verifyQuestionToken(token);
+    } catch (e) {
+        throw new ApiError(httpStatus.UNAUTHORIZED, 'bad token');
+    }
+
+    return param;
+};
+
+const getQuestion = catchAsync(async (req, res) => {
+    const { id, email } = getGuestFromToken(req.params && req.params.token);
     const item = await guestService.getQuestionsModuli({ _id: id });
+    // console.log('item xxx ', JSON.stringify(item, null, 2));
     if (!item) {
         throw new ApiError(httpStatus.UNAUTHORIZED, 'questionario not found');
     }
 
     const partecipante = item && item.partecipanti && item.partecipanti
-        .find(part => part.email === email)
-    if (!partecipante) {
+        .filter(part => part.email === email);
+
+    if (!partecipante || !partecipante[0]) {
         throw new ApiError(httpStatus.UNAUTHORIZED, 'partecipante non trovato');
     }
-    res.send(item);
+
+    const toSend = { ...item._doc, partecipanti: partecipante[0] };
+    // console.log('item xxx ', JSON.stringify(item._doc, null, 2));
+    res.send(toSend);
 });
 
 const getQuestionsOld = catchAsync(async (req, res) => {
@@ -48,7 +63,34 @@ const getQuestionsOld = catchAsync(async (req, res) => {
     const filter = { ...idQuestion, ...filterPick, ...iduserFilter, ...closeAtFilter };
     const question = await viewService.getQuestions(filter, options);
     res.send(question);
-    console.log('getQuestions filter', filter);
 });
 
-module.exports = { getQuestion};
+const upDateRisposte = catchAsync(async (req, res) => {
+    const { id, email } = getGuestFromToken(req.params && req.params.token);
+    const item = await guestService.getQuestionsModuli({ _id: id });
+    const risposte = req.body && req.body.risposte;
+
+    if (!item || !risposte) {
+        throw new ApiError(httpStatus.UNAUTHORIZED, 'questionario not found');
+    }
+
+    const partecipante = item && item.partecipanti && item.partecipanti
+        .find(part => part.email === email)
+
+    if (!partecipante) {
+        throw new ApiError(httpStatus.UNAUTHORIZED, 'partecipante non trovato');
+    }
+
+    // console.log('XXXx update ', req.body);
+
+    const up = await guestService.updateRisposte(id, email, risposte);
+
+    if (!up) {
+        throw new ApiError(httpStatus.UNAUTHORIZED, 'error on update');
+    }
+
+    res.send(up);
+
+});
+
+module.exports = { getQuestion, upDateRisposte };

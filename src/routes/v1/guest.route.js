@@ -22,7 +22,7 @@ router
  router
     .route('/:token')
     .get(authGuest('guest'), validate(guestValidation.getGuestToken), guestCtrl.getQuestion)
-     //.patch(auth('guest'), validate(guestValidation.update), model.update)
+    .patch(authGuest('guest'), validate(guestValidation.getGuestToken), guestCtrl.upDateRisposte)
     // .delete(auth('guest'), validate(guestValidation.delete), guestCtrl.delete);
 
 module.exports = router;
