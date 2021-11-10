@@ -68,7 +68,6 @@ const questionSendMail = async (_id, host) => {
 
     return await Promise.allSettled(listPromise)
         .then((result) => {
-         console.log(result[0]);
             result.map(res => {
                 const status = res.status;
                 const mailSent = res && res.value && res.status && res.status === 'fulfilled' && res.value.accepted[0];

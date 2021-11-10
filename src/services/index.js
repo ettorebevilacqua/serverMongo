@@ -65,7 +65,6 @@ function ModelService(Model) {
         }
 
         updateBody._info = { ...item._info, uu: user && user.id };
-        // console.log('xxxx id', id);
         const [dataBodyModel, error] = Model.beforeServiceSave ? await Model.beforeServiceSave(Model, user, updateBody, id) : [updateBody, null];
         if (error) {
             throw new ApiError(httpStatus.CONFLICT, error);
@@ -76,6 +75,7 @@ function ModelService(Model) {
         await item.save();
         return item;
     };
+    
     const deleteItem = async (id) => {
         const item = await getById(id);
         if (!item) {
