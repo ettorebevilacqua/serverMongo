@@ -28,7 +28,7 @@ const getItem = {
 
 const update = {
   params: Joi.object().keys({
-    id: Joi.required().custom(objectId),
+    token: Joi.string(),
   }),
 };
 

@@ -35,9 +35,8 @@ const generateQuestionToken = (id, email, secret = config.jwt.secret) => {
 
 const verifyQuestionToken = (token) => {
   const decode = jwt.verify(token, config.jwt.secret);
-  console.log('decode', decode);
   const { id, email } = decode;
-  console.log('token checked', decode);
+  // console.log('token checked', decode);
   return !id || !email ? null : decode;
   /* if (!id || !email) {
     throw new Error('Token not found');

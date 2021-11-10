@@ -15,7 +15,6 @@ const getDataFromToken = (...requiredRights) => async (req, res, next) => {
 };
 
 const authGuest = (...requiredRights) => async (req, res, next) => {
-    console.log('xxxxxxxxxxxxx' );
     return new Promise((resolve, reject) => {
       resolve();
     })
