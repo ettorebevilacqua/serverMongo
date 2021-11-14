@@ -46,7 +46,16 @@ const questionSchema = mongoose.Schema(withRecordInfo({
         type: Date,
         required: false,
     },
-    partecipanti: [{}],
+    partecipanti: [{
+        nome: String,
+        cognome: String,
+        telefono: String,
+        email: String,
+        token: String,
+        sendCount: Number,
+        sent: Boolean,
+        risposte:[{}]
+    }],
 }));
 
 // add plugin that converts mongoose to json
