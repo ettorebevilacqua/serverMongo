@@ -114,7 +114,7 @@ const beforeServiceSave = async (Model, user, dataBody, id = 0) => {
 
     if (question && question.closeAt && !!closeAt) {
         return [null, ' ' + ' question has close '];
-    }
+    } 
 
     // const found = await Model.constructor.findOne({ idquestion: '6191f87432b898ed1265f519', idcorso : '6191f87432b898ed1265f518'});
     const found = await Model.constructor.findOne({ idquestion, idcorso });
