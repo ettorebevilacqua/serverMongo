@@ -29,17 +29,17 @@ const questionSendMail = async (_id, host) => {
     const listPartecipanti = question.partecipanti;
     const idSent = [];
     const listPromise = [];
-
+    // console.log('questionSendMail idquestion', question.id);
     const results = listPartecipanti.map(async (item, idx) => {
         const { email, id, nome } = item || {};
 
         if (!email || item.sent) {
-            // return false;
+             return false;
         }
         // if (idx > 1) return true; // limit for test email send
         // console.log('questionSendMail part idquestion ', question.id);
 
-        const tokenAccess = item.token ? item.token : generateQuestionToken(question.id, email);
+        const tokenAccess = item.token ? item.token : generateQuestionToken(question.id, email );
 
 
         const pathUrl = getPathUrl(host, tokenAccess);
@@ -49,8 +49,8 @@ const questionSendMail = async (_id, host) => {
             nome: item.nome,
             cognome: item.cognome,
         };
-
         item.token = tokenAccess;
+        item.sendCount = (item.sendCount || 0) +1;
         const msgToSend = msgQuestionario(param);
         listPromise.push(sendEmail(email, 'Questionario ', msgToSend, true));
 
@@ -70,54 +70,43 @@ const questionSendMail = async (_id, host) => {
         .then((result) => {
             result.map(res => {
                 const status = res.status;
-                // console.log('questionSendMail listPartecipanti', listPartecipanti);
                 const mailSent = res && res.value && res.status && res.status === 'fulfilled' && res.value.accepted[0];
-                const listPartecipantiClone = [...listPartecipanti];
-                listPartecipantiClone.map((part, idx) => {
-                    const partClone = { ...part._doc };
-                    const sendCount = partClone.sendCount || 0;
-                    const newPart = { ...partClone, sent: true, sendCount: sendCount + 1};
-                    // console.log('set partec xxx ', newPart);
-                    if (part.email === mailSent) {
-                        question.partecipanti[idx] = newPart;
-                    }  // && question.partecipanti.set(idx, newPart);
-                    // console.log('set partec', question.partecipanti[idx]);
+                listPartecipanti.map((part, idx) => {
+                    part.email === mailSent && question.partecipanti.set(idx, { ...part, sent:true });
+                     console.log('set partec', question.partecipanti[idx]);
 
                 });
-
+                // console.log('result mail, ');
                 res.status === 'fulfilled'
             });
-            // console.log('set partec xxxxxxxxxx', question._doc);
+            question.save();
+            return result;
+        }) // .then(data=>console.log('dddddd'));;
 
-            try{
-                question.save();
-            } catch(e){
-                throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, 'errore nel salvataggio');
-            }
-
-            return question;
-        });
 }
 
 const getDocentiActivity = async (_id, idEnte) => {
     const query = queryDocentiActivity.queryDocentiActivity(idEnte);
     const list = await Question.aggregate(query); //.exec(function (err, results) {
     // console.log(query);
-    return { results: list };
+    return { results:list };
 }
 
-const getQuestionActivity = async (_id, idEnte) => {
-    const query = queryDocentiActivity.queryQuestionActivity(idEnte);
-    const list = await Question.aggregate(query); //.exec(function (err, results) {
-    console.log('xxx2', JSON.stringify(list, null, 2));
-    return { results: list };
-}
+const getQuestionsModuli = async (filter) => {
+    return await Question.findOne(filter).populate('idcorso')
+      .populate({
+        path: "idquestion", // populate blogs
+        populate: {
+          path: "moduli" // in blogs, populate comments
+        }
+      })
+      .populate('idcorso');
+  };
 
 module.exports = {
     questionSendMail,
     getDocentiActivity,
+    getQuestionsModuli,
 };
-
-// getQuestionActivity(null, '1');
 
 // questionSendMail('6107fcb1bf9939b6183f566e', 'local/');

@@ -21,9 +21,14 @@ router
     .patch(auth('manager'), validate(modelValidation.update), modelCtrl.update)
     .delete(auth('manager'), validate(modelValidation.delete), modelCtrl.delete);
 
+
 router
     .route('/sendEmail/:id')
     .patch(auth('manager'), validate(modelValidation.getItem), questionCtrl.sendMail);
+
+router
+    .route('/withModulo/:id')
+    .get(auth('manager'), validate(modelValidation.getItem), questionCtrl.getQuestionsModuli);
 
 module.exports = router;
 
@@ -221,4 +226,34 @@ module.exports = router;
  *         $ref: '#/components/responses/Forbidden'
  *       "404":
  *         $ref: '#/components/responses/NotFound'
+ */
+
+/**
+ * @swagger
+ * /questions/withModulo/{id}:
+ *   get:
+ *     summary: Get a Question and moduli
+ *     description: Logged in users can fetch only their own user information. Only admins can fetch other users.
+ *     tags: [Questions]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: User id
+ *     responses:
+ *       "200":
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *                $ref: '#/components/schemas/Question'
+ *       "401":
+ *         $ref: '#/components/responses/Unauthorized'
+ *       "403":
+ *         $ref: '#/components/responses/Forbidden'
+ *       "404":
  */

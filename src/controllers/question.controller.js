@@ -22,9 +22,19 @@ const getDocentiActivity = catchAsync(async (req, res) => {
   res.send(sends);
 });
 
+const getQuestionsModuli = catchAsync(async (req, res) =>{
+  const _id = req.params.id;
+  const data = await questionService.getQuestionsModuli({ _id } );
+  if (!data) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Question not found');
+  }
+  res.send(data);
+});
+
 module.exports = {
   sendMail,
   getDocentiActivity,
+  getQuestionsModuli,
 }
 
 getDocentiActivity({user:{idEnte:1}}, {send:()=>'test'})
