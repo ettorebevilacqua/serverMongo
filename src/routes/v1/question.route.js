@@ -13,7 +13,7 @@ const router = express.Router();
 router
     .route('/')
     .post(auth('manager'), validate(modelValidation.create), modelCtrl.create)
-    .get(auth('manager'), validate(modelValidation.getItems), modelCtrl.getItems);
+    .get(auth('manager'), validate(modelValidation.getItems), questionCtrl.getItems);
 
 router
     .route('/:id')
@@ -85,6 +85,11 @@ module.exports = router;
  *     security:
  *       - bearerAuth: []
  *     parameters:
+ *       - in: query
+ *         name: state
+ *         schema:
+ *           type: string
+ *         description: state question open, close, saved
  *       - in: query
  *         name: sortBy
  *         schema:

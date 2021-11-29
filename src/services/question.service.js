@@ -24,6 +24,11 @@ La preghiamo di prestare attenzione nel rispondere a tutte le domande per l'invi
 </p>
 `;
 
+const query = async (filter, options ) => {
+    const Models = await Question.paginate(filter, options);
+    return Models;
+};
+
 const questionSendMail = async (_id, host) => {
     const question = await Question.findOne({ _id });
     const listPartecipanti = question.partecipanti;
