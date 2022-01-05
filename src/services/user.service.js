@@ -88,9 +88,10 @@ module.exports = {
   deleteUserById,
 };
 
- createUser({
+/* createUser({
   "name": "ettorebevilacqua",
   "email": "ettore@bevilacqua.com",
   "password": "password1",
   "role": "admin"
 });
+*/
