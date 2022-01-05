@@ -8,6 +8,7 @@ const docsRoute = require('./docs.route');
 const corsiRoute = require('./corsi.route');
 const docentiRoute = require('./docenti.route');
 const ambitiRoute = require('./ambiti.route');
+const entiRoute = require('./enti.route');
 const listsRoute = require('./lists.route');
 const guestRoute = require('./guest.route');
 const config = require('../../config/config');
@@ -46,6 +47,10 @@ const defaultRoutes = [
   {
     path: '/ambiti',
     route: ambitiRoute,
+  },
+  {
+    path: '/enti',
+    route: entiRoute,
   },
   {
     path: '/lists',
