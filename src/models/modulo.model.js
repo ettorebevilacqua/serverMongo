@@ -17,7 +17,7 @@ const domandaSchema = mongoose.Schema({
         trim: true,
     },
     isDocente:{
-        type: Boolena,
+        type: Boolean,
         requires: false
     },
     ratingStart: {
