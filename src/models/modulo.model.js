@@ -16,10 +16,6 @@ const domandaSchema = mongoose.Schema({
         required: false,
         trim: true,
     },
-    isDocente:{
-        type: Boolean,
-        requires: false
-    },
     ratingStart: {
         type: String,
         required: false,
@@ -50,9 +46,10 @@ const moduloSchema = mongoose.Schema(withRecordInfo({
         trim: true,
     },
     domande: [domandaSchema],
-    questionModuli: [{
-        type: mongoose.Schema.Types.ObjectId, ref: "QuestionModuli"
-    }]
+    isDocente:{
+        type: Boolean,
+        requires: false
+    },
 }));
 
 const questionModuliSchema = mongoose.Schema(withRecordInfo({
